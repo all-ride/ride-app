@@ -1,6 +1,6 @@
 # Pallo: Application
 
-Application base of the PHP Pallo framework.
+Base integration of the Pallo framework libraries.
 
 This module hooks the needed libraries together to get a system with the following features;
 

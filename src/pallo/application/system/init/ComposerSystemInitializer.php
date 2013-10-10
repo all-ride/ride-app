@@ -1,8 +1,8 @@
 <?php
 
-namespace pallo\app\system\init;
+namespace pallo\application\system\init;
 
-use pallo\app\system\System;
+use pallo\application\system\System;
 
 use pallo\library\system\exception\SystemException;
 
@@ -13,7 +13,7 @@ class ComposerSystemInitializer implements SystemInitializer {
 
     /**
      * Initializes the system eg. by setting the file browser paths
-     * @param pallo\app\system\System $system Instance of the system
+     * @param pallo\application\system\System $system Instance of the system
      * @return null
      */
     public function initializeSystem(System $system) {

@@ -69,7 +69,7 @@
         </call>
     </dependency>    
 
-    <dependency interface="pallo\library\event\loader\io\EventListenerIO" class="pallo\app\event\loader\io\ConfigEventListenerIO" id="config">
+    <dependency interface="pallo\library\event\loader\io\EventListenerIO" class="pallo\application\event\loader\io\ConfigEventListenerIO" id="config">
         <call method="__construct">
             <argument name="path" type="scalar">
                 <property name="value" value="config" />
@@ -86,7 +86,7 @@
         </call>
     </dependency>
 
-    <dependency interface="pallo\library\event\loader\EventLoader" class="pallo\app\event\loader\DependencyEventLoader" id="dependency">
+    <dependency interface="pallo\library\event\loader\EventLoader" class="pallo\application\event\loader\DependencyEventLoader" id="dependency">
         <call method="__construct">
             <argument name="io" type="dependency">
                 <property name="interface" value="pallo\library\event\loader\io\EventListenerIO" />
@@ -104,7 +104,7 @@
         </call>
     </dependency>
 
-    <dependency interface="pallo\library\event\EventManager" class="pallo\app\event\LoggedEventManager" id="app">
+    <dependency interface="pallo\library\event\EventManager" class="pallo\application\event\LoggedEventManager" id="app">
         <call method="__construct">
             <argument name="invoker" type="dependency">
                 <property name="interface" value="pallo\library\reflection\Invoker" />

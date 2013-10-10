@@ -1,0 +1,3 @@
+{
+    "cache.event": "%application%/cache/%environment%/events.php"
+}

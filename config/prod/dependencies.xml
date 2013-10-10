@@ -8,7 +8,7 @@
         </call>
     </dependency> 
     
-    <dependency interface="pallo\library\event\loader\io\EventListenerIO" class="pallo\app\event\loader\io\CachedEventListenerIO" id="cache">
+    <dependency interface="pallo\library\event\loader\io\EventListenerIO" class="pallo\application\event\loader\io\CachedEventListenerIO" id="cache">
         <call method="__construct">
             <argument name="io" type="dependency">
                 <property name="interface" value="pallo\library\event\loader\io\EventListenerIO" />
@@ -21,7 +21,7 @@
         </call>
     </dependency>
 
-    <dependency interface="pallo\library\event\loader\EventLoader" class="pallo\app\event\loader\DependencyEventLoader" id="dependency">
+    <dependency interface="pallo\library\event\loader\EventLoader" class="pallo\application\event\loader\DependencyEventLoader" id="dependency">
         <call method="__construct">
             <argument name="io" type="dependency">
                 <property name="interface" value="pallo\library\event\loader\io\EventListenerIO" />

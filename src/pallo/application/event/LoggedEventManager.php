@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\app\event;
+namespace pallo\application\event;
 
 use pallo\library\decorator\Decorator;
 use pallo\library\event\GenericEventManager;

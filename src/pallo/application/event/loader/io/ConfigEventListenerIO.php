@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\app\event\loader\io;
+namespace pallo\application\event\loader\io;
 
 use pallo\library\config\Config;
 use pallo\library\event\exception\EventException;

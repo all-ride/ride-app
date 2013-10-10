@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\app\dependency\argument;
+namespace pallo\application\dependency\argument;
 
 use pallo\library\config\Config;
 use pallo\library\dependency\argument\CallArgumentParser as LibCallArgumentParser;
