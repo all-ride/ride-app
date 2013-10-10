@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\app\event\loader;
+namespace pallo\application\event\loader;
 
 use pallo\library\dependency\DependencyInjector;
 use pallo\library\event\loader\io\EventListenerIO;
@@ -21,7 +21,7 @@ class DependencyEventLoader extends GenericEventLoader {
     /**
      * Constructs a new event loader
      * @param pallo\library\dependency\DependencyInjector $dependencyInjector
-     * @param pallo\app\event\io\EventIO $io
+     * @param pallo\application\event\io\EventIO $io
      * @return null
      */
     public function __construct(EventListenerIO $io, DependencyInjector $dependencyInjector) {

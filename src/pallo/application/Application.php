@@ -1,11 +1,11 @@
 <?php
 
-namespace pallo\app;
+namespace pallo\application;
 
 /**
  * Interface for a Pallo application
  */
-interface App {
+interface Application {
 
     /**
      * Service the application

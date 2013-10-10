@@ -1,13 +1,13 @@
 <?php
 
-namespace pallo\app\system;
+namespace pallo\application\system;
 
-use pallo\app\dependency\argument\CallArgumentParser;
-use pallo\app\dependency\argument\ConfigArgumentParser;
-use pallo\app\dependency\argument\DependencyArgumentParser;
-use pallo\app\dependency\io\CachedDependencyIO;
-use pallo\app\dependency\io\XmlDependencyIO;
-use pallo\app\system\init\ComposerSystemInitializer;
+use pallo\application\dependency\argument\CallArgumentParser;
+use pallo\application\dependency\argument\ConfigArgumentParser;
+use pallo\application\dependency\argument\DependencyArgumentParser;
+use pallo\application\dependency\io\CachedDependencyIO;
+use pallo\application\dependency\io\XmlDependencyIO;
+use pallo\application\system\init\ComposerSystemInitializer;
 
 use pallo\library\config\io\CachedConfigIO;
 use pallo\library\config\io\ParserConfigIO;
@@ -195,7 +195,7 @@ class System extends LibSystem {
 
     /**
      * Creates the dependency IO
-     * @return pallo\app\dependency\io\XmlDependencyIO
+     * @return pallo\application\dependency\io\XmlDependencyIO
      */
     protected function createDependencyIO() {
         $fileBrowser = $this->getFileBrowser();
@@ -281,7 +281,7 @@ class System extends LibSystem {
 
     /**
      * Gets the system initializer
-     * @return pallo\app\system\init\SystemInitializer
+     * @return pallo\application\system\init\SystemInitializer
      */
     protected function createSystemInitializer() {
         return new ComposerSystemInitializer();
@@ -338,7 +338,7 @@ class System extends LibSystem {
             $id = $this->getConfig()->get(self::PARAM_APPLICATION);
         }
 
-        $app = $this->getDependencyInjector()->get('pallo\\app\\App', $id);
+        $app = $this->getDependencyInjector()->get('pallo\\application\\Application', $id);
         $app->service();
     }
 

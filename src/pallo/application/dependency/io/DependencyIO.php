@@ -1,6 +1,6 @@
 <?php
 
-namespace pallo\app\dependency\io;
+namespace pallo\application\dependency\io;
 
 /**
  * Interface to get a dependency container
