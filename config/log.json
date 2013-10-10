@@ -1,0 +1,3 @@
+{
+    "file": "%application%/log/%environment%.log"
+}

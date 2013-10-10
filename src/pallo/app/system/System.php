@@ -7,10 +7,11 @@ use pallo\app\dependency\argument\ConfigArgumentParser;
 use pallo\app\dependency\argument\DependencyArgumentParser;
 use pallo\app\dependency\io\CachedDependencyIO;
 use pallo\app\dependency\io\XmlDependencyIO;
+use pallo\app\system\init\ComposerSystemInitializer;
 
 use pallo\library\config\io\CachedConfigIO;
 use pallo\library\config\io\ParserConfigIO;
-use pallo\library\config\parser\IniParser;
+use pallo\library\config\parser\JsonParser;
 use pallo\library\config\GenericConfig;
 use pallo\library\config\ConfigHelper;
 use pallo\library\dependency\DependencyInjector;
@@ -123,6 +124,22 @@ class System extends LibSystem {
     }
 
     /**
+     * Gets a system parameter
+     * @param string $key Key of the parameter
+     * @param mixed $default Default value to return when the parameter is not
+     * set
+     * @return mixed Value of the parameter if set, provided default value
+     * otherwise
+     */
+    public function getParameter($key, $default = null) {
+        if (isset($this->parameters[$key])) {
+            return $this->parameters[$key];
+        }
+
+        return $default;
+    }
+
+    /**
      * Gets the name of the environment
      * @return string
      */
@@ -197,7 +214,7 @@ class System extends LibSystem {
     }
 
     /**
-     * Gets the config
+     * Gets the configuration
      * @return pallo\library\config\Config
      */
     public function getConfig() {
@@ -209,15 +226,15 @@ class System extends LibSystem {
     }
 
     /**
-     * Creates the config
+     * Creates the configuration
      * @return null
      */
     protected function createConfig() {
         $fileBrowser = $this->getFileBrowser();
         $helper = new ConfigHelper();
-        $parser = new IniParser();
+        $parser = new JsonParser();
 
-        $io = new ParserConfigIO($fileBrowser, $helper, $parser, 'ini', self::DIRECTORY_CONFIG);
+        $io = new ParserConfigIO($fileBrowser, $helper, $parser, 'json', self::DIRECTORY_CONFIG);
         $io->setEnvironment($this->parameters['environment']);
 
         if (isset($this->parameters['cache']['config']) && $this->parameters['cache']['config']) {
@@ -235,9 +252,16 @@ class System extends LibSystem {
      * @return pallo\library\system\file\browser\FileBrowser
      */
     public function getFileBrowser() {
-        if (!$this->fileBrowser) {
-            $this->fileBrowser = $this->createFileBrowser();
+        if ($this->fileBrowser) {
+            return $this->fileBrowser;
         }
+
+        $this->fileBrowser = $this->createFileBrowser();
+
+        // whenever you request the file browser, you need the system to
+        // be ready and initialized, let's do just that
+        $initializer = $this->createSystemInitializer();
+        $initializer->initializeSystem($this);
 
         return $this->fileBrowser;
     }
@@ -252,38 +276,15 @@ class System extends LibSystem {
         $fileBrowser = new GenericFileBrowser();
         $fileBrowser->setPublicPath(self::DIRECTORY_PUBLIC);
 
-        if (isset($this->parameters['directory']['application'])) {
-            $applicationDirectory = $this->fs->getFile($this->parameters['directory']['application']);
-
-            $fileBrowser->setApplicationDirectory($applicationDirectory);
-        }
-
-        if (isset($this->parameters['directory']['public'])) {
-            $publicDirectory = $this->fs->getFile($this->parameters['directory']['public']);
-
-            $fileBrowser->setPublicDirectory($publicDirectory);
-        }
-
-        if (isset($this->parameters['directory']['modules'])) {
-            $modules = $this->parameters['directory']['modules'];
-            if (!is_array($modules)) {
-                $modules = array($modules);
-            }
-
-            foreach ($modules as $moduleDirectory) {
-                $includeDirectory = $this->fs->getFile($moduleDirectory);
-                if (!$includeDirectory->isDirectory()) {
-                    continue;
-                }
-
-                $includeDirectories = $includeDirectory->read();
-                foreach ($includeDirectories as $includeDirectory) {
-                    $fileBrowser->addIncludeDirectory($includeDirectory);
-                }
-            }
-        }
-
         return $fileBrowser;
+    }
+
+    /**
+     * Gets the system initializer
+     * @return pallo\app\system\init\SystemInitializer
+     */
+    protected function createSystemInitializer() {
+        return new ComposerSystemInitializer();
     }
 
     /**
