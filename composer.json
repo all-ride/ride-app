@@ -2,7 +2,7 @@
     "name": "pallo/app",
     "description": "Base integration of the Pallo framework libraries",
     "license": "MIT",
-    "version": "0.2.0",
+    "version": "0.2.1",
     "authors": [
         {
             "name": "Joris Vandeweerd",
@@ -20,7 +20,7 @@
     }, 
     "autoload": {
         "psr-0": {
-            "pallo\\app\\": ["src/", "test/src/"]
+            "pallo\\application\\": ["src/", "test/src/"]
         }
     }
 }
