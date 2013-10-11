@@ -17,13 +17,16 @@ class ComposerSystemInitializer implements SystemInitializer {
      * @return null
      */
     public function initializeSystem(System $system) {
-        $composerFile = $system->getFileSystem()->getFile(__DIR__ . '/../../../../../../../../composer.lock');
+        $fileSystem = $system->getFileSystem();
+
+        $composerFile = $fileSystem->getFile(__DIR__ . '/../../../../../../../../composer.lock');
         if (!$composerFile->exists()) {
             // not in a composer installation
             return;
         }
 
-        $rootFile = $composerFile->getParent();
+        // get the normalized root path
+        $rootFile = $fileSystem->getFile($composerFile->getParent()->getAbsolutePath());
 
         // set the application and public directory
         $applicationDirectory = $rootFile->getChild('application');
