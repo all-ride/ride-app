@@ -2,6 +2,7 @@
 
 namespace pallo\application\dependency\io;
 
+use pallo\library\config\io\AbstractIO;
 use pallo\library\dependency\exception\DependencyException;
 use pallo\library\dependency\Dependency;
 use pallo\library\dependency\DependencyCall;
@@ -16,7 +17,7 @@ use \DOMElement;
 /**
  * Implementation to get a dependency container based on XML files
  */
-class XmlDependencyIO implements DependencyIO {
+class XmlDependencyIO extends AbstractIO implements DependencyIO {
 
     /**
      * The file name
@@ -97,76 +98,13 @@ class XmlDependencyIO implements DependencyIO {
     const ATTRIBUTE_VALUE = 'value';
 
     /**
-     * Instance of the file browser
-     * @var pallo\library\system\file\browser\FileBrowser
-     */
-    protected $fileBrowser;
-
-    /**
-     * Relative path for the configuration file
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * Name of the environment
-     * @var string
-     */
-    protected $environment;
-
-    /**
      * Constructs a new XML dependency IO
      * @param pallo\core\environment\filebrowser\FileBrowser $fileBrowser
      * @param string $environment
      * @return null
      */
     public function __construct(FileBrowser $fileBrowser, $path = null) {
-        $this->fileBrowser = $fileBrowser;
-
-        $this->setPath($path);
-    }
-
-    /**
-     * Sets the relative path for configuration files of this IO
-     * @param string $path
-     * @throws pallo\library\dependency\exception\DependencyException
-     */
-    public function setPath($path) {
-        if (!is_string($path) || $path == '') {
-            throw new DependencyException('Could not set the path: provided path is empty or invalid');
-        }
-
-        $this->path = $path;
-    }
-
-    /**
-     * Gets the relative path for the configuration files of this IO
-     * @return string
-     */
-    public function getPath() {
-        return $this->path;
-    }
-
-    /**
-     * Sets the name of the environment
-     * @param string $environment Name of the environment
-     * @return null
-     * @throws Exception when the provided name is empty or not a string
-     */
-    public function setEnvironment($environment = null) {
-        if ($environment !== null && (!is_string($environment) || !$environment)) {
-            throw new DependencyException('Could not set the environment: provided environment is empty or not a string');
-        }
-
-        $this->environment = $environment;
-    }
-
-    /**
-     * Gets the name of the environment
-     * @return string|null
-     */
-    public function getEnvironment() {
-        return $this->environment;
+        parent::__construct($fileBrowser, self::FILE, $path);
     }
 
     /**
@@ -182,7 +120,7 @@ class XmlDependencyIO implements DependencyIO {
             $path = $this->path . File::DIRECTORY_SEPARATOR;
         }
 
-        $files = array_reverse($this->fileBrowser->getFiles($path . self::FILE));
+        $files = array_reverse($this->fileBrowser->getFiles($path . $this->file));
         foreach ($files as $file) {
             $this->readDependencies($container, $file);
         }
@@ -190,7 +128,7 @@ class XmlDependencyIO implements DependencyIO {
         if ($this->environment) {
             $path .= $this->environment . File::DIRECTORY_SEPARATOR;
 
-            $files = array_reverse($this->fileBrowser->getFiles($path . self::FILE));
+            $files = array_reverse($this->fileBrowser->getFiles($path . $this->file));
             foreach ($files as $file) {
                 $this->readDependencies($container, $file);
             }
