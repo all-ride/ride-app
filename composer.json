@@ -2,7 +2,7 @@
     "name": "pallo/app",
     "description": "Base integration of the Pallo framework libraries",
     "license": "MIT",
-    "version": "0.2.2",
+    "version": "0.3.0",
     "authors": [
         {
             "name": "Joris Vandeweerd",
@@ -11,11 +11,11 @@
     ],
     "require": {
         "pallo/lib-common": ">=0.3.0",
-        "pallo/lib-config": ">=0.1.0",
-        "pallo/lib-dependency": ">=0.1.0",
-        "pallo/lib-event": ">=0.1.0",
+        "pallo/lib-config": ">=0.2.0",
+        "pallo/lib-dependency": ">=0.3.0",
+        "pallo/lib-event": ">=0.3.0",
         "pallo/lib-log": ">=0.2.0",
-        "pallo/lib-reflection": ">=0.1.0",
+        "pallo/lib-reflection": ">=0.3.0",
         "pallo/lib-system": ">=0.2.0"
     }, 
     "autoload": {
