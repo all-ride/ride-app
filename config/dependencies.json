@@ -1,0 +1,274 @@
+{
+    "dependencies": [
+        {
+            "interfaces": "pallo\\library\\decorator\\Decorator",
+            "class": "pallo\\library\\decorator\\DateFormatDecorator",
+            "id": "date.format"
+        },
+        {
+            "interfaces": "pallo\\library\\decorator\\Decorator",
+            "class": "pallo\\library\\decorator\\LogMessageDecorator",
+            "id": "log.message",
+            "calls": [
+                {
+                    "method": "setDateDecorator",
+                    "arguments": [
+                        {
+                            "name": "dateDecorator",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\decorator\\Decorator",
+                                "id": "date.format"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "method": "setMemoryDecorator",
+                    "arguments": [
+                        {
+                            "name": "memoryDecorator",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\decorator\\Decorator",
+                                "id": "storage.size"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "pallo\\library\\decorator\\Decorator",
+            "class": "pallo\\library\\decorator\\StorageSizeDecorator",
+            "id": "storage.size"
+        },
+        {
+            "interfaces": "pallo\\library\\decorator\\Decorator",
+            "class": "pallo\\library\\decorator\\VariableDecorator",
+            "id": "variable"
+        },
+        {
+            "interfaces": "pallo\\library\\log\\listener\\LogListener",
+            "class": "pallo\\library\\log\\listener\\FileLogListener",
+            "id": "file",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "fileName",
+                            "type": "parameter",
+                            "properties": {
+                                "key": "log.file"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "method": "setFileTruncateSize",
+                    "arguments": [
+                        {
+                            "name": "size",
+                            "type": "parameter",
+                            "properties": {
+                                "key": "log.truncate",
+                                "default": 1024
+                            }
+                        }
+                    ]
+                },
+                {
+                    "method": "setLevel",
+                    "arguments": [
+                        {
+                            "name": "level",
+                            "type": "parameter",
+                            "properties": {
+                                "key": "log.level"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "method": "setLogMessageDecorator",
+                    "arguments": [
+                        {
+                            "name": "logMessageDecorator",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\decorator\\Decorator",
+                                "id": "log.message"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "pallo\\library\\log\\Log",
+            "class": "pallo\\library\\log\\Log",
+            "id": "app",
+            "calls": [
+                {
+                    "method": "setClient",
+                    "arguments": [
+                        {
+                            "name": "client",
+                            "type": "call",
+                            "properties": {
+                                "interface": "pallo\\library\\system\\System",
+                                "method": "getClient"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "method": "addLogListener",
+                    "arguments": [
+                        {
+                            "name": "listener",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\log\\listener\\LogListener",
+                                "id": "file"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "method": "logDebug",
+                    "arguments": [
+                        {
+                            "name": "title",
+                            "type": "scalar",
+                            "properties": {
+                                "value": "------------"
+                            }
+                        },
+                        {
+                            "name": "source",
+                            "type": "scalar",
+                            "properties": {
+                                "value": "app"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "pallo\\library\\event\\loader\\io\\EventListenerIO",
+            "class": "pallo\\application\\event\\loader\\io\\ConfigEventListenerIO",
+            "id": "config",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "path",
+                            "type": "scalar",
+                            "properties": {
+                                "value": "config"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "pallo\\library\\event\\loader\\io\\EventListenerIO",
+            "class": "pallo\\library\\event\\loader\\io\\ChainedEventListenerIO",
+            "id": "chain",
+            "calls": [
+                {
+                    "method": "addEventListenerIO",
+                    "arguments": [  
+                        {
+                            "name": "eventListenerIO",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\event\\loader\\io\\EventListenerIO",
+                                "id": "config"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "pallo\\library\\event\\loader\\EventLoader", 
+            "class": "pallo\\application\\event\\loader\\DependencyEventLoader",
+            "id": "dependency",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "io",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\event\\loader\\io\\EventListenerIO",
+                                "id": "chain"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "pallo\\library\\event\\loader\\EventLoader", 
+            "class": "pallo\\library\\event\\loader\\ChainedEventLoader", 
+            "id": "chain",
+            "calls": [
+                {
+                    "method": "addEventLoader",
+                    "arguments": [
+                        {
+                            "name": "eventLoader",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\event\\loader\\EventLoader",
+                                "id": "dependency"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "pallo\\library\\event\\EventManager",
+            "class": "pallo\\application\\event\\LoggedEventManager",
+            "id": "app",
+            "calls": [
+                {
+                    "method": "setEventLoader",
+                    "arguments": [
+                        {
+                            "name": "eventLoader",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\event\\loader\\EventLoader",
+                                "id": "chain"
+                            }
+                        }
+                    ]
+                },
+                "setLog",
+                {
+                    "method": "setValueDecorator",
+                    "arguments": [
+                        {
+                            "name": "valueDecorator",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\decorator\\Decorator",
+                                "id": "variable"
+                            }
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

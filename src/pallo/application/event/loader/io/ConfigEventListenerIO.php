@@ -2,6 +2,7 @@
 
 namespace pallo\application\event\loader\io;
 
+use pallo\library\config\io\AbstractIO;
 use pallo\library\config\Config;
 use pallo\library\event\exception\EventException;
 use pallo\library\event\loader\io\EventListenerIO;
@@ -12,7 +13,7 @@ use pallo\library\system\file\File;
 /**
  * Interface to read event definitions from the data source
  */
-class ConfigEventListenerIO implements EventListenerIO {
+class ConfigEventListenerIO extends AbstractIO implements EventListenerIO {
 
     /**
      * File name
@@ -21,28 +22,10 @@ class ConfigEventListenerIO implements EventListenerIO {
     const FILE = 'events.conf';
 
     /**
-     * Instance of the file browser
-     * @var pallo\library\system\file\browser\FileBrowser
-     */
-    protected $fileBrowser;
-
-    /**
      * Instance of the configuration
      * @var pallo\library\config\Config
      */
     protected $config;
-
-    /**
-     * Relative path for the configuration file
-     * @var string
-     */
-    protected $path;
-
-    /**
-     * Name of the environment
-     * @var string
-     */
-    protected $environment;
 
     /**
      * Constructs a new XML dependency IO
@@ -51,53 +34,9 @@ class ConfigEventListenerIO implements EventListenerIO {
      * @return null
      */
     public function __construct(FileBrowser $fileBrowser, Config $config, $path = null) {
-        $this->fileBrowser = $fileBrowser;
+        parent::__construct($fileBrowser, self::FILE, $path);
+
         $this->config = $config;
-
-        $this->setPath($path);
-    }
-
-    /**
-     * Sets the relative path for configuration files of this IO
-     * @param string $path
-     * @throws pallo\library\config\exception\ConfigException
-     */
-    public function setPath($path) {
-        if (!is_string($path) || $path == '') {
-            throw new EventException('Could not set the path: provided path is empty or invalid');
-        }
-
-        $this->path = $path;
-    }
-
-    /**
-     * Gets the relative path for the configuration files of this IO
-     * @return string
-     */
-    public function getPath() {
-        return $this->path;
-    }
-
-    /**
-     * Sets the name of the environment
-     * @param string $environment Name of the environment
-     * @return null
-     * @throws Exception when the provided name is empty or not a string
-     */
-    public function setEnvironment($environment = null) {
-        if ($environment !== null && (!is_string($environment) || !$environment)) {
-            throw new EventException('Could not set the environment: provided environment is empty or not a string');
-        }
-
-        $this->environment = $environment;
-    }
-
-    /**
-     * Gets the name of the environment
-     * @return string|null
-     */
-    public function getEnvironment() {
-        return $this->environment;
     }
 
     /**
@@ -111,12 +50,12 @@ class ConfigEventListenerIO implements EventListenerIO {
             $path = $this->path . File::DIRECTORY_SEPARATOR;
         }
 
-        $files = array_reverse($this->fileBrowser->getFiles($path . self::FILE));
+        $files = array_reverse($this->fileBrowser->getFiles($path . $this->file));
 
         if ($this->environment) {
             $path .= $this->environment . File::DIRECTORY_SEPARATOR;
 
-            $files += array_reverse($this->fileBrowser->getFiles($path . self::FILE));
+            $files += array_reverse($this->fileBrowser->getFiles($path . $this->file));
         }
 
         $eventListeners = array();

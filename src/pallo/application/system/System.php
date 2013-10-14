@@ -6,7 +6,7 @@ use pallo\application\dependency\argument\CallArgumentParser;
 use pallo\application\dependency\argument\ConfigArgumentParser;
 use pallo\application\dependency\argument\DependencyArgumentParser;
 use pallo\application\dependency\io\CachedDependencyIO;
-use pallo\application\dependency\io\XmlDependencyIO;
+use pallo\application\dependency\io\ParserDependencyIO;
 use pallo\application\system\init\ComposerSystemInitializer;
 
 use pallo\library\config\io\CachedConfigIO;
@@ -23,6 +23,7 @@ use pallo\library\system\System as LibSystem;
 use pallo\library\ErrorHandler;
 use pallo\library\String;
 use pallo\library\Timer;
+use pallo\application\system\init\SystemInitializer;
 
 /**
  * Factory for Pallo applications
@@ -121,6 +122,12 @@ class System extends LibSystem {
         if (!isset($this->parameters['environment'])) {
             $this->parameters['environment'] = 'dev';
         }
+
+        if (!isset($this->parameters['initializers'])) {
+            $this->parameters['initializers'] = array(
+            	new ComposerSystemInitializer(),
+            );
+        }
     }
 
     /**
@@ -184,7 +191,7 @@ class System extends LibSystem {
         $dependencyInjector->setInstance($config, 'pallo\\library\\config\\Config');
         $dependencyInjector->setInstance($this->fileBrowser, 'pallo\\library\\system\\file\\browser\\FileBrowser');
         $dependencyInjector->setInstance($this->fs, 'pallo\library\system\\file\\FileSystem');
-        $dependencyInjector->setInstance($this, 'pallo\\app\\system\\System');
+        $dependencyInjector->setInstance($this, 'pallo\\application\\system\\System');
         $dependencyInjector->setInstance($this, 'pallo\\library\\system\\System');
         $dependencyInjector->setInstance($this->timer);
 
@@ -199,8 +206,9 @@ class System extends LibSystem {
      */
     protected function createDependencyIO() {
         $fileBrowser = $this->getFileBrowser();
+        $parser = new JsonParser();
 
-        $dependencyIO = new XmlDependencyIO($fileBrowser, self::DIRECTORY_CONFIG);
+        $dependencyIO = new ParserDependencyIO($fileBrowser, $parser, 'dependencies.json', self::DIRECTORY_CONFIG);
         $dependencyIO->setEnvironment($this->parameters['environment']);
 
         if (isset($this->parameters['cache']['dependencies']) && $this->parameters['cache']['dependencies']) {
@@ -234,7 +242,7 @@ class System extends LibSystem {
         $helper = new ConfigHelper();
         $parser = new JsonParser();
 
-        $io = new ParserConfigIO($fileBrowser, $helper, $parser, 'json', self::DIRECTORY_CONFIG);
+        $io = new ParserConfigIO($fileBrowser, $helper, $parser, 'parameters.json', self::DIRECTORY_CONFIG);
         $io->setEnvironment($this->parameters['environment']);
 
         if (isset($this->parameters['cache']['config']) && $this->parameters['cache']['config']) {
@@ -260,8 +268,7 @@ class System extends LibSystem {
 
         // whenever you request the file browser, you need the system to
         // be ready and initialized, let's do just that
-        $initializer = $this->createSystemInitializer();
-        $initializer->initializeSystem($this);
+        $this->initializeSystem();
 
         return $this->fileBrowser;
     }
@@ -280,11 +287,21 @@ class System extends LibSystem {
     }
 
     /**
-     * Gets the system initializer
-     * @return pallo\application\system\init\SystemInitializer
+     * Invoke the system initializers
+     * @return null
+     * @throws pallo\library\system\exception\SystemException when a non
+     * SystemInitializer instance is detected
      */
-    protected function createSystemInitializer() {
-        return new ComposerSystemInitializer();
+    protected function initializeSystem() {
+        foreach ($this->parameters['initializers'] as $initializer) {
+            if (!$initializer instanceof SystemInitializer) {
+                throw new SystemException('Could not initialize the system: no instance of SystemInitializer detected');
+            }
+
+            $initializer->initializeSystem($this);
+        }
+
+        unset($this->parameters['initializers']);
     }
 
     /**

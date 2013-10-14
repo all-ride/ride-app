@@ -34,7 +34,7 @@ class LoggedEventManager extends GenericEventManager {
      * @param pallo\library\log\Log $log
      * @return null
      */
-    public function setLog(Log $log = null) {
+    public function setLog(Log $log) {
         $this->log = $log;
     }
 
