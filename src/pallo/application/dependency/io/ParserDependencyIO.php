@@ -40,6 +40,14 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
     }
 
     /**
+     * Gets the instance of the parser
+     * @return pallo\library\config\parser\Parser
+     */
+    public function getParser() {
+        return $this->parser;
+    }
+
+    /**
      * Gets the dependency container
      * @return pallo\core\dependency\DependencyContainer
      */
@@ -133,7 +141,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
             $this->readInterfaces($dependencyStruct, $dependency);
 
             if ($dependencyStruct) {
-                throw new DependencyException('Could not add dependency for ' . $className . ': provided properties are invalid (' . implode(', ', array_keys($dependencyStruct)));
+                throw new DependencyException('Could not add dependency for ' . $className . ': provided properties are invalid (' . implode(', ', array_keys($dependencyStruct)) . ')');
             }
 
             $container->addDependency($dependency);

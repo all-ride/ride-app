@@ -177,7 +177,9 @@ class System extends LibSystem {
         $configArgumentParser = new ConfigArgumentParser($config);
         $dependencyArgumentParser = new DependencyArgumentParser($config);
 
-        $dependencyContainer = $this->createDependencyIO()->getDependencyContainer();
+        $dependencyIO = $this->createDependencyIO();
+        $dependencyContainer = $dependencyIO->getDependencyContainer();
+
         $reflectionHelper = new ReflectionHelper();
 
         $dependencyInjector = new DependencyInjector($dependencyContainer, $reflectionHelper);
@@ -189,6 +191,7 @@ class System extends LibSystem {
         $dependencyInjector->setInstance($dependencyInjector);
         $dependencyInjector->setInstance($dependencyInjector, 'pallo\\library\\reflection\\Invoker');
         $dependencyInjector->setInstance($config, 'pallo\\library\\config\\Config');
+        $dependencyInjector->setInstance($dependencyIO->getParser(), 'pallo\\library\\config\\parser\\Parser', 'json');
         $dependencyInjector->setInstance($this->fileBrowser, 'pallo\\library\\system\\file\\browser\\FileBrowser');
         $dependencyInjector->setInstance($this->fs, 'pallo\library\system\\file\\FileSystem');
         $dependencyInjector->setInstance($this, 'pallo\\application\\system\\System');

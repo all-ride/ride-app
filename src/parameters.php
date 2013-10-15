@@ -13,7 +13,7 @@ $parameters = array(
         "config" => false,
         "dependencies" => false,
     ),
-	"environment" => "dev",
+    "environment" => "dev",
 //     "initializers" => array(
 //         new ComposerSystemInitializer(),
 //         new ComposerSystemInitializer('/path/to/composer.lock'),
