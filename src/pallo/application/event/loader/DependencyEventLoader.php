@@ -36,29 +36,20 @@ class DependencyEventLoader extends GenericEventLoader {
      * @return array|string
      */
     protected function processCallback($callback) {
-        if (!is_string($callback)) {
+        if (!is_array($callback) || !isset($callback[0]) || !isset($callback[1])) {
             return $callback;
         }
 
-        if (strpos($callback, '->') !== false) {
-            // instance method
-            list($class, $method) = explode('->', $callback, 2);
-            if (strpos($class, '#') === false) {
-                $id = null;
-            } else {
-                list($class, $id) = explode('#', $class, 2);
-            }
-
-            $instance = $this->dependencyInjector->get($class, $id);
-
-            return array($instance, $method);
-        } elseif (strpos($callback, '::') !== false) {
-            // static method
-            return explode('::', $callback, 2);
+        if (strpos($callback[0], '#') === false) {
+            $class = $callback[0];
+            $id = null;
         } else {
-            // function
-            return $callback;
+            list($class, $id) = explode('#', $callback[0], 2);
         }
+
+        $instance = $this->dependencyInjector->get($class, $id);
+
+        return array($instance, $callback[1]);
     }
 
 }

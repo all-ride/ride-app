@@ -133,7 +133,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
             $this->readInterfaces($dependencyStruct, $dependency);
 
             if ($dependencyStruct) {
-                throw new DependencyException('Could not add dependency for ' . $className . ': provided properties are invalid (' . implode(', ', array_keys($dependencyStruct)));
+                throw new DependencyException('Could not add dependency for ' . $className . ': provided properties are invalid (' . implode(', ', array_keys($dependencyStruct)) . ')');
             }
 
             $container->addDependency($dependency);
@@ -209,7 +209,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
                 }
 
                 foreach ($argumentStruct['properties'] as $name => $value) {
-                    $properties[$name] = $value;
+                    $properties[$name] = $this->processParameter($value);
                 }
             }
 

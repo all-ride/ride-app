@@ -1,6 +1,36 @@
 {
     "dependencies": [
         {
+            "interfaces": "pallo\\application\\cache\\control\\CacheControl",
+            "class": "pallo\\application\\cache\\control\\DependencyCacheControl",
+            "id": "dependencies"
+        },
+        {
+            "interfaces": "pallo\\application\\cache\\control\\CacheControl",
+            "class": "pallo\\application\\cache\\control\\EventCacheControl",
+            "id": "events",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "io",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\event\\loader\\io\\EventListenerIO",
+                                "id": "%system.event.listener|parser%"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "pallo\\application\\cache\\control\\CacheControl",
+            "class": "pallo\\application\\cache\\control\\ParameterCacheControl",
+            "id": "parameters"
+        },
+        {
             "interfaces": "pallo\\library\\decorator\\Decorator",
             "class": "pallo\\library\\decorator\\DateFormatDecorator",
             "id": "date.format"
@@ -159,12 +189,27 @@
         },
         {
             "interfaces": "pallo\\library\\event\\loader\\io\\EventListenerIO",
-            "class": "pallo\\application\\event\\loader\\io\\ConfigEventListenerIO",
-            "id": "config",
+            "class": "pallo\\application\\event\\loader\\io\\ParserEventListenerIO",
+            "id": "parser",
             "calls": [
                 {
                     "method": "__construct",
                     "arguments": [
+                        {
+                            "name": "parser",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\config\\parser\\Parser",
+                                "id": "json"
+                            }
+                        },
+                        {
+                            "name": "file",
+                            "type": "scalar",
+                            "properties": {
+                                "value": "events.json"
+                            }
+                        },
                         {
                             "name": "path",
                             "type": "scalar",
@@ -173,23 +218,50 @@
                             }
                         }
                     ]
-                }
+                },
+                "setConfig"
             ]
         },
         {
-            "interfaces": "pallo\\library\\event\\loader\\io\\EventListenerIO",
-            "class": "pallo\\library\\event\\loader\\io\\ChainedEventListenerIO",
-            "id": "chain",
+            "class": "pallo\\library\\system\\file\\File", 
+            "id": "cache.event",
             "calls": [
                 {
-                    "method": "addEventListenerIO",
-                    "arguments": [  
+                    "method": "__construct",
+                    "arguments": [
                         {
-                            "name": "eventListenerIO",
+                            "name": "path",
+                            "type": "parameter",
+                            "properties": {
+                                "key": "system.cache.event"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },        
+        {
+            "interfaces": "pallo\\library\\event\\loader\\io\\EventListenerIO",
+            "class": "pallo\\application\\event\\loader\\io\\CachedEventListenerIO",
+            "id": "cache",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "io",
                             "type": "dependency",
                             "properties": {
                                 "interface": "pallo\\library\\event\\loader\\io\\EventListenerIO",
-                                "id": "config"
+                                "id": "%system.event.listener.cache|parser%"
+                            }
+                        },
+                        {
+                            "name": "file",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\system\\file\\File",
+                                "id": "cache.event"
                             }
                         }
                     ]
@@ -209,7 +281,7 @@
                             "type": "dependency",
                             "properties": {
                                 "interface": "pallo\\library\\event\\loader\\io\\EventListenerIO",
-                                "id": "chain"
+                                "id": "%system.event.listener|parser%"
                             }
                         }
                     ]
@@ -242,6 +314,18 @@
             "id": "app",
             "calls": [
                 {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "invoker",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "pallo\\library\\reflection\\Invoker"
+                            }
+                        }
+                    ]
+                },
+                {
                     "method": "setEventLoader",
                     "arguments": [
                         {
@@ -249,7 +333,7 @@
                             "type": "dependency",
                             "properties": {
                                 "interface": "pallo\\library\\event\\loader\\EventLoader",
-                                "id": "chain"
+                                "id": "%system.event.loader|chain%"
                             }
                         }
                     ]

@@ -10,10 +10,9 @@ use pallo\application\system\init\DirectorySystemInitializer;
  */
 $parameters = array(
     "cache" => array(
-        "config" => false,
-        "dependencies" => false,
+        "config" => false
     ),
-	"environment" => "dev",
+    "environment" => "dev",
 //     "initializers" => array(
 //         new ComposerSystemInitializer(),
 //         new ComposerSystemInitializer('/path/to/composer.lock'),

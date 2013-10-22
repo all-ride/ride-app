@@ -34,12 +34,6 @@ class System extends LibSystem {
      * Name of the config directory
      * @var string
      */
-    const DIRECTORY_CACHE = 'cache';
-
-    /**
-     * Name of the config directory
-     * @var string
-     */
     const DIRECTORY_CONFIG = 'config';
 
     /**
@@ -177,7 +171,9 @@ class System extends LibSystem {
         $configArgumentParser = new ConfigArgumentParser($config);
         $dependencyArgumentParser = new DependencyArgumentParser($config);
 
-        $dependencyContainer = $this->createDependencyIO()->getDependencyContainer();
+        $dependencyIO = $this->createDependencyIO();
+        $dependencyContainer = $dependencyIO->getDependencyContainer();
+
         $reflectionHelper = new ReflectionHelper();
 
         $dependencyInjector = new DependencyInjector($dependencyContainer, $reflectionHelper);
@@ -188,13 +184,20 @@ class System extends LibSystem {
         $dependencyInjector->setInstance($reflectionHelper);
         $dependencyInjector->setInstance($dependencyInjector);
         $dependencyInjector->setInstance($dependencyInjector, 'pallo\\library\\reflection\\Invoker');
+        $dependencyInjector->setInstance($dependencyIO, 'pallo\\application\\dependency\\io\\DependencyIO');
+        $dependencyInjector->setInstance($this->jsonParser, 'pallo\\library\\config\\parser\\Parser', 'json');
         $dependencyInjector->setInstance($config, 'pallo\\library\\config\\Config');
+        $dependencyInjector->setInstance($this->configHelper, 'pallo\\library\\config\\ConfigHelper');
+        $dependencyInjector->setInstance($this->configIO, 'pallo\\library\\config\\io\\ConfigIO');
         $dependencyInjector->setInstance($this->fileBrowser, 'pallo\\library\\system\\file\\browser\\FileBrowser');
         $dependencyInjector->setInstance($this->fs, 'pallo\library\system\\file\\FileSystem');
         $dependencyInjector->setInstance($this, 'pallo\\application\\system\\System');
         $dependencyInjector->setInstance($this, 'pallo\\library\\system\\System');
         $dependencyInjector->setInstance($this->timer);
 
+        unset($this->jsonParser);
+        unset($this->configHelper);
+        unset($this->configIO);
         unset($this->timer);
 
         return $dependencyInjector;
@@ -206,13 +209,15 @@ class System extends LibSystem {
      */
     protected function createDependencyIO() {
         $fileBrowser = $this->getFileBrowser();
+        $config = $this->getConfig();
         $parser = new JsonParser();
 
         $dependencyIO = new ParserDependencyIO($fileBrowser, $parser, 'dependencies.json', self::DIRECTORY_CONFIG);
         $dependencyIO->setEnvironment($this->parameters['environment']);
+        $dependencyIO->setConfig($config);
 
-        if (isset($this->parameters['cache']['dependencies']) && $this->parameters['cache']['dependencies']) {
-            $file = self::DIRECTORY_CACHE . '/' . $this->parameters['environment'] . '/dependencies.php';
+        if ($config->get('system.dependencies.cache')) {
+            $file = 'data/cache/' . $this->parameters['environment'] . '/dependencies.php';
             $file = $fileBrowser->getApplicationDirectory()->getChild($file);
 
             $dependencyIO = new CachedDependencyIO($dependencyIO, $file);
@@ -238,21 +243,32 @@ class System extends LibSystem {
      * @return null
      */
     protected function createConfig() {
-        $fileBrowser = $this->getFileBrowser();
-        $helper = new ConfigHelper();
-        $parser = new JsonParser();
+        $this->configIO = $this->createConfigIO();
 
-        $io = new ParserConfigIO($fileBrowser, $helper, $parser, 'parameters.json', self::DIRECTORY_CONFIG);
+        return new GenericConfig($this->configIO, $this->configHelper);
+    }
+
+    /**
+     * Creates the configuration IO
+     * @return null
+     */
+    protected function createConfigIO() {
+        $this->configHelper = new ConfigHelper();
+        $this->jsonParser = new JsonParser();
+
+        $fileBrowser = $this->getFileBrowser();
+
+        $io = new ParserConfigIO($fileBrowser, $this->configHelper, $this->jsonParser, 'parameters.json', self::DIRECTORY_CONFIG);
         $io->setEnvironment($this->parameters['environment']);
 
         if (isset($this->parameters['cache']['config']) && $this->parameters['cache']['config']) {
-            $file = self::DIRECTORY_CACHE . '/' . $this->parameters['environment'] . '/config.php';
+            $file = 'data/cache/' . $this->parameters['environment'] . '/config.php';
             $file = $fileBrowser->getApplicationDirectory()->getChild($file);
 
             $io = new CachedConfigIO($io, $file);
         }
 
-        return new GenericConfig($io, $helper);
+        return $io;
     }
 
     /**
@@ -339,7 +355,7 @@ class System extends LibSystem {
         if (!$secret) {
             $secret = substr(hash('sha512', md5(time())), 0, 21);
 
-            $this->getConfig->set(self::PARAM_SECRET, $secret);
+            $this->getConfig()->set(self::PARAM_SECRET, $secret);
         }
 
         return $secret;
