@@ -4,6 +4,7 @@ namespace pallo\application\event;
 
 use pallo\library\decorator\Decorator;
 use pallo\library\event\GenericEventManager;
+use pallo\library\event\Event;
 use pallo\library\log\Log;
 
 /**
@@ -48,52 +49,6 @@ class LoggedEventManager extends GenericEventManager {
     }
 
     /**
-     * Registers a new event listener
-     * @param string $event Name of the event
-     * @param string|array|pallo\library\reflection\Callback $callback Callback
-     * of the event listener
-     * @param string $weight Weight in the listener list
-     * @return EventListener
-     * @throws pallo\library\event\exception\EventException when a invalid
-     * argument has been provided
-     * @throws pallo\library\event\exception\EventException when the weight of
-     * the event listener is invalid or already set
-     */
-    public function addEventListener($event, $callback, $weight = null) {
-        $eventListener = parent::addEventListener($event, $callback, $weight);
-
-        if ($this->log) {
-            $this->log->logDebug('Added event listener', $eventListener, self::LOG_SOURCE);
-        }
-
-        return $eventListener;
-    }
-
-    /**
-     * Unregisters a event listener
-     * @param mixed $eventListener A integer to unregister by weight, a
-     * callback or a instance of EventListener
-     * @return boolean True when a event has been removed, false otherwise
-     */
-    public function removeEventListener($event = null, $eventListener = null) {
-        $result = parent::unregisterEventListener($eventListener, $event);
-
-        if ($this->log && $result) {
-            if (!$event && !$eventListener) {
-                $this->log->logDebug('Removed all event listeners', null, self::LOG_SOURCE);
-            } else {
-                if (!$event) {
-                    $event = $eventListener->getEvent();
-                }
-
-                $this->log->logDebug('Removed event listener', $eventListener, self::LOG_SOURCE);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
      * Triggers the listeners of the provided event with the provided arguments
      * @param string $event Name of the event
      * @param array $arguments Array with the arguments for the event listener
@@ -126,10 +81,10 @@ class LoggedEventManager extends GenericEventManager {
 
         foreach ($this->events[$event->getName()] as $weight => $eventListener) {
             if ($this->log) {
-                $this->log->logDebug('Triggering ' . $eventListener, $logArgument, self::LOG_SOURCE);
+                $this->log->logDebug('Triggering ' . $eventListener, $logArguments, self::LOG_SOURCE);
             }
 
-            $this->invoker->invoke($eventListener->getCallback(), $callbackArguments);
+            $this->invoker->invoke($eventListener->getCallback(), array('event' => $event));
 
             if ($event->isPreventDefault()) {
                 break;

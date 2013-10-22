@@ -1,3 +1,4 @@
 {
-    "log.file": "%application%/log/%environment%.log"
+    "log.file": "%application%/data/log/%environment%.log",
+    "system.cache.event": "%application%/data/cache/%environment%/events.php"
 }

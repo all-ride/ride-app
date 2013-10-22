@@ -71,6 +71,7 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
 
         // add paths of the modules to the file browser
         ksort($includePaths);
+        $includePaths = array_reverse($includePaths, true);
 
         foreach ($includePaths as $level => $includeDirectories) {
             foreach ($includeDirectories as $includeDirectory) {

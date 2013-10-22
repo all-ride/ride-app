@@ -58,11 +58,20 @@ class DependencyArgumentParser extends LibDependencyArgumentParser {
             return null;
         }
 
-        if (substr($id, 0, 1) != self::DELIMITER || substr($id, -1) != self::DELIMITER) {
+        if (substr($id, 0, 1) != '%' || substr($id, -1) != '%') {
             return $id;
         }
 
-        return $config->get(substr($id, 1, -1));
+        $parameter = substr($id, 1, -1);
+
+        if (strpos($parameter, '|') !== false) {
+            list($key, $default) = explode('|', $parameter, 2);
+        } else {
+            $key = $parameter;
+            $default = null;
+        }
+
+        return $this->config->get($key, $default);
     }
 
 }

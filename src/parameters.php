@@ -10,8 +10,7 @@ use pallo\application\system\init\DirectorySystemInitializer;
  */
 $parameters = array(
     "cache" => array(
-        "config" => false,
-        "dependencies" => false,
+        "config" => false
     ),
     "environment" => "dev",
 //     "initializers" => array(

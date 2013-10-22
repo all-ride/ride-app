@@ -41,6 +41,7 @@ class DirectorySystemInitializer extends AbstractSystemInitializer {
             return;
         }
 
+        $directory = $fileSystem->getFile($directory->getAbsolutePath());
         $fileBrowser = $system->getFileBrowser();
 
         $autoloader = new Autoloader();
@@ -62,6 +63,7 @@ class DirectorySystemInitializer extends AbstractSystemInitializer {
 
         // add paths of the modules to the file browser
         ksort($includePaths);
+        $includePaths = array_reverse($includePaths, true);
 
         foreach ($includePaths as $level => $includeDirectories) {
             foreach ($includeDirectories as $includeDirectory) {

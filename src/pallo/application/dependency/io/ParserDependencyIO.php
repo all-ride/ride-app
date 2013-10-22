@@ -40,14 +40,6 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
     }
 
     /**
-     * Gets the instance of the parser
-     * @return pallo\library\config\parser\Parser
-     */
-    public function getParser() {
-        return $this->parser;
-    }
-
-    /**
      * Gets the dependency container
      * @return pallo\core\dependency\DependencyContainer
      */
@@ -217,7 +209,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
                 }
 
                 foreach ($argumentStruct['properties'] as $name => $value) {
-                    $properties[$name] = $value;
+                    $properties[$name] = $this->processParameter($value);
                 }
             }
 
