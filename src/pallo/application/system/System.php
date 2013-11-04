@@ -182,8 +182,7 @@ class System extends LibSystem {
         $dependencyInjector->setArgumentParser('parameter', $configArgumentParser);
 
         $dependencyInjector->setInstance($reflectionHelper);
-        $dependencyInjector->setInstance($dependencyInjector);
-        $dependencyInjector->setInstance($dependencyInjector, 'pallo\\library\\reflection\\Invoker');
+        $dependencyInjector->setInstance($dependencyInjector, array('pallo\\library\\dependency\\DependencyInjector', 'pallo\\library\\reflection\\Invoker'));
         $dependencyInjector->setInstance($dependencyIO, 'pallo\\application\\dependency\\io\\DependencyIO');
         $dependencyInjector->setInstance($this->jsonParser, 'pallo\\library\\config\\parser\\Parser', 'json');
         $dependencyInjector->setInstance($config, 'pallo\\library\\config\\Config');
@@ -191,8 +190,7 @@ class System extends LibSystem {
         $dependencyInjector->setInstance($this->configIO, 'pallo\\library\\config\\io\\ConfigIO');
         $dependencyInjector->setInstance($this->fileBrowser, 'pallo\\library\\system\\file\\browser\\FileBrowser');
         $dependencyInjector->setInstance($this->fs, 'pallo\library\system\\file\\FileSystem');
-        $dependencyInjector->setInstance($this, 'pallo\\application\\system\\System');
-        $dependencyInjector->setInstance($this, 'pallo\\library\\system\\System');
+        $dependencyInjector->setInstance($this, array('pallo\\library\\system\\System', 'pallo\\application\\system\\System'));
         $dependencyInjector->setInstance($this->timer);
 
         unset($this->jsonParser);
