@@ -168,6 +168,10 @@ class CachedDependencyIO implements DependencyIO {
                 }
 
                 $output .= '$d->setInterfaces(' . var_export($dependency->getInterfaces(), true) . ");\n";
+                $tags = $dependency->getTags();
+                foreach ($tags as $tag) {
+                    $output .= '$d->addTag(' . var_export($tag) . ");\n";
+                }
 
                 $output .= '$container->addDependency(';
                 $output .= '$d);';

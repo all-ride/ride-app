@@ -131,6 +131,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
 
             $this->readCalls($dependencyStruct, $dependency);
             $this->readInterfaces($dependencyStruct, $dependency);
+            $this->readTags($dependencyStruct, $dependency);
 
             if ($dependencyStruct) {
                 throw new DependencyException('Could not add dependency for ' . $className . ': provided properties are invalid (' . implode(', ', array_keys($dependencyStruct)) . ')');
@@ -231,7 +232,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
             if (is_string($dependencyStruct['interfaces'])) {
                 $interfaces[$dependencyStruct['interfaces']] = true;
             } elseif (!is_array($dependencyStruct['interfaces'])) {
-                throw new DependencyException('Could not read calls for ' . $dependency->getClassName() . ' with id ' . $dependency->getId() . ': calls is not an array');
+                throw new DependencyException('Could not read interfaces for ' . $dependency->getClassName() . ' with id ' . $dependency->getId() . ': interfaces is not a string or an array');
             } else {
                 foreach ($dependencyStruct['interfaces'] as $interface) {
                     $interfaces[$interface] = true;
@@ -246,6 +247,31 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
         }
 
         $dependency->setInterfaces($interfaces);
+    }
+
+    /**
+     * Reads the tags from the provided dependency structure and adds
+     * them to the dependency instance
+     * @param array $dependencyStruct
+     * @param pallo\library\dependency\Dependency $dependency
+     * @return null
+     */
+    protected function readTags(array &$dependencyStruct, Dependency $dependency) {
+        if (!isset($dependencyStruct['tags'])) {
+            return;
+        }
+
+        if (is_string($dependencyStruct['tags'])) {
+            $dependency->addTag($dependencyStruct['tags']);
+        } elseif (!is_array($dependencyStruct['tags'])) {
+            throw new DependencyException('Could not read tags for ' . $dependency->getClassName() . ' with id ' . $dependency->getId() . ': tags is not a string or an array');
+        } else {
+            foreach ($dependencyStruct['tags'] as $tag) {
+                $dependency->addTag($tag);
+            }
+        }
+
+        unset($dependencyStruct['tags']);
     }
 
 }
