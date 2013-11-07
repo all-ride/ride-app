@@ -4,6 +4,7 @@ namespace pallo\application\cache\control;
 
 use pallo\application\dependency\io\CachedDependencyIO;
 use pallo\application\dependency\io\DependencyIO;
+use pallo\application\system\System;
 
 use pallo\library\config\Config;
 
@@ -54,7 +55,7 @@ class DependencyCacheControl extends AbstractCacheControl {
      * @return null
      */
     public function enable() {
-        $this->config->set('system.dependencies.cache', true);
+        $this->config->set(System::PARAM_CACHE_DEPENDENCIES, true);
     }
 
     /**
@@ -62,7 +63,7 @@ class DependencyCacheControl extends AbstractCacheControl {
      * @return null
      */
     public function disable() {
-        $this->config->set('system.dependencies.cache', null);
+        $this->config->set(System::PARAM_CACHE_DEPENDENCIES, null);
     }
 
     /**
