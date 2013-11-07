@@ -5,6 +5,7 @@ namespace pallo\application\system\init;
 use pallo\application\system\System;
 
 use pallo\library\system\exception\SystemException;
+use pallo\library\Autoloader;
 
 /**
  * Composer implementation to initialize the Pallo system
@@ -77,6 +78,14 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
             foreach ($includeDirectories as $includeDirectory) {
                 $fileBrowser->addIncludeDirectory($includeDirectory);
             }
+        }
+
+        // create a autoloader for application
+        $src = $applicationDirectory->getChild('src');
+        if ($src->exists()) {
+            $autoloader = new Autoloader();
+            $autoloader->registerAutoloader();
+            $autoloader->addIncludePath($src->getAbsolutePath());
         }
     }
 
