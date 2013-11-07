@@ -281,7 +281,7 @@
                             "type": "dependency",
                             "properties": {
                                 "interface": "pallo\\library\\event\\loader\\io\\EventListenerIO",
-                                "id": "%system.event.listener|parser%"
+                                "id": "%system.event.listener.default|parser%"
                             }
                         }
                     ]
