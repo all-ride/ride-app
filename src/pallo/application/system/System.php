@@ -61,6 +61,12 @@ class System extends LibSystem {
     const PARAM_APPLICATION = 'system.application';
 
     /**
+     * Parameter to see if the dependencies should be cached
+     * @var string
+     */
+    const PARAM_CACHE_DEPENDENCIES = 'system.dependencies.cache';
+
+    /**
      * Parameter for the name of the system
      * @var string
      */
@@ -184,7 +190,7 @@ class System extends LibSystem {
         $dependencyInjector->setInstance($reflectionHelper);
         $dependencyInjector->setInstance($dependencyInjector, array('pallo\\library\\dependency\\DependencyInjector', 'pallo\\library\\reflection\\Invoker'));
         $dependencyInjector->setInstance($dependencyIO, 'pallo\\application\\dependency\\io\\DependencyIO');
-        $dependencyInjector->setInstance($this->jsonParser, 'pallo\\library\\config\\parser\\Parser', 'json');
+        $dependencyInjector->setInstance($this->jsonParser, array('pallo\\library\\config\\parser\\Parser', 'pallo\\library\\config\\parser\\JsonParser'), 'json');
         $dependencyInjector->setInstance($config, 'pallo\\library\\config\\Config');
         $dependencyInjector->setInstance($this->configHelper, 'pallo\\library\\config\\ConfigHelper');
         $dependencyInjector->setInstance($this->configIO, 'pallo\\library\\config\\io\\ConfigIO');
@@ -214,7 +220,7 @@ class System extends LibSystem {
         $dependencyIO->setEnvironment($this->parameters['environment']);
         $dependencyIO->setConfig($config);
 
-        if ($config->get('system.dependencies.cache')) {
+        if ($config->get(self::PARAM_CACHE_DEPENDENCIES)) {
             $file = 'data/cache/' . $this->parameters['environment'] . '/dependencies.php';
             $file = $fileBrowser->getApplicationDirectory()->getChild($file);
 
