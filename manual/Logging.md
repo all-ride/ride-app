@@ -13,21 +13,28 @@ Messages of normal insignificant events of the application (template rendered, e
 
 ## Logging A Message
 
+    <?php
+    
     use pallo\library\log\Log;
 
-    $log->logInformation('Log message', 'an optional description', 'name of the log source');
+    function foo(Log $log) {
+        $log->logInformation('Log message', 'an optional description', 'name of the log source');
+    }
     
 You can also easily log exceptions:
 
-    try {
-        // some buggy code
-    } catch (Exception $exception) {
-        $log = $zibo->getLog();
-        if ($log) {
+    <?php
+
+    use pallo\library\log\Log;
+
+    function foo(Log $log) {
+        try {
+            // some buggy code
+        } catch (Exception $exception) {
             $log->logException($exception);
+            
+            // handle exception
         }
-        
-        // handle exception
     }
 
 For a full overview of the log methods, check the API of the [pallo\library\log\Log](docs/api/class/pallo/library/log/Log) class.
@@ -40,6 +47,8 @@ The log file is the name of your environment with the _.log_ extension.
 Other log listeners can be implemented and registered through the dependencies.
 
 First, create your listener:
+
+    <?php
 
     namespace foo/log/listener;
 
@@ -54,7 +63,7 @@ First, create your listener:
         
     }
     
-Then you add it to the core logger using the dependencies:
+Then you add it to the log using the dependencies:
 
     {
         "dependencies": [

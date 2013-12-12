@@ -240,22 +240,55 @@ There are situations where you want to program to the dependency injector. (eg f
 The most generic way to get a dependency is by providing only the interface. 
 The last defined implementation of the interface will be loaded:
     
-    $router = $dependencyInjector->get('pallo\\library\\router\\Router');
+    <?php 
+    
+    use pallo\library\dependency\DependencyInjector;
+    
+    function foo(DependencyInjector $dependencyInjector) {
+        $router = $dependencyInjector->get('pallo\\library\\router\\Router');
+    }
 
 To obtain a specific implementation, you can pass an id when retrieving a dependency:
 
-    $input = $dependencyInjector->get('pallo\\library\\cli\\input\\Input', 'readline');
+    <?php 
+    
+    use pallo\library\dependency\DependencyInjector;
+    
+    function foo(DependencyInjector $dependencyInjector) {
+        $input = $dependencyInjector->get('pallo\\library\\cli\\input\\Input', 'readline');
+    }
     
 This will get the input implementation for a interactive shell.
 
 Loaded instances are kept in memory.
 When the same dependency is requested multiple times, only a single instance is created and it will be used as result for all requests to that dependency.
 
+### Get Tagged Dependencies
+
+You can use tagging to obtain dependencies for a specific context:
+
+    <?php 
+    
+    use pallo\library\dependency\DependencyInjector;
+    
+    function foo(DependencyInjector $dependencyInjector) {
+        $include = array();
+        $exclude = array('private');
+    
+        $commands = $dependencyInjector->getByTag('pallo\\library\\cli\\command\\Command', $include, $exclude);
+    }
+    
 ### Get All Dependencies
 
 To get all implementation of a interface, you can call:
 
-    $commands = $dependencyInjector->getAll('pallo\\library\\cli\\command\\Command');
+    <?php 
+    
+    use pallo\library\dependency\DependencyInjector;
+    
+    function foo(DependencyInjector $dependencyInjector) {
+        $commands = $dependencyInjector->getAll('pallo\\library\\cli\\command\\Command');
+    }
 
 ### Using DependencyInjector As A Factory
 
@@ -264,4 +297,10 @@ By passing construct arguments, you can let the dependency injector act as a fac
 The dependency injector will use the provided arguments for the constructor of the instance. 
 The additional defined calls of the dependency are skipped and the instance will not be kept in the memory of the dependency injector.
 
-    $validator = $dependencyInjector->get('pallo\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5)));
+    <?php 
+    
+    use pallo\library\dependency\DependencyInjector;
+    
+    function foo(DependencyInjector $dependencyInjector) {
+        $validator = $dependencyInjector->get('pallo\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5)));
+    }

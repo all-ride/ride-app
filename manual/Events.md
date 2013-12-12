@@ -9,20 +9,26 @@ Event names are _._ (dot) separated strings, preferably a more general token fir
 
 A event can be triggered with a simple call to the event manager:
 
-    use pallo\library\event\EventManager;
+    <?php 
     
-    $arguments = array(
-        'argument1' => 'value1',
-        'argument2' => 'value2,
-    );
+    use pallo\library\event\EventManager;
 
-    $eventManager->triggerEvent('event.name', $arguments);
+    function foo(EventManager $eventManager) {    
+        $arguments = array(
+            'argument1' => 'value1',
+            'argument2' => 'value2,
+        );
+    
+        $eventManager->triggerEvent('event.name', $arguments);
+    }
     
 All listeners to the event _event.name_ are now triggered. 
 The arguments for the event are contained in the event argument. 
 
 A listener for this sample event could look like:
 
+    <?php
+     
     use pallo\library\event\Event;
 
     function foo(Event $event) {
@@ -35,6 +41,8 @@ A listener for this sample event could look like:
 You can define any dependency in the method signature of your event listener.
 The instance will be injected by the dependency injector:
 
+    <?php
+
     use pallo\library\event\Event;    
     use pallo\library\system\System;
     
@@ -46,6 +54,8 @@ The instance will be injected by the dependency injector:
 
 You can stop the event by calling _setPreventDefault_:
 
+    <?php
+    
     use pallo\library\event\Event;
 
     function foo(Event $event) {
@@ -58,9 +68,13 @@ You can stop the event by calling _setPreventDefault_:
 
 You can register a event listener to the event manager using the call:
 
-    use pallo\library\event\Event;
+    <?php
+    
+    use pallo\library\event\EventManager;
 
-    $eventManager->addEventListener('event.name', 'callback');
+    function foo(EventManager $eventManager) {
+        $eventManager->addEventListener('event.name', 'callback');
+    }
 
 Event listeners are executed in the order they are registered. 
 It's best to have listeners which are independant of each other.
@@ -73,19 +87,31 @@ This gives enough room before and after the default index.
 
 In the following example, _$bar->method()_ would be triggered before _$foo->method()_ when the event _event.name_ is triggered:
 
-    $eventManager->addEventListener('event.name', array($foo, 'method'));
-    $eventManager->addEventListener('event.name', array($bar, 'method'), 10);
+    <?php
     
-    $eventManager->triggerEvent('event.name');
+    use pallo\library\event\EventManager;
+
+    function foo(EventManager $eventManager, $foo, $bar) {
+        $eventManager->addEventListener('event.name', array($foo, 'method'));
+        $eventManager->addEventListener('event.name', array($bar, 'method'), 10);
+        
+        $eventManager->triggerEvent('event.name');
+    }
     
-In the following example, _$foo->methodC()_ would be triggered first, then _$foo->methodA()_, _$bar->methodD()_ and finally _$bar->methodB()_:
+In the following example, _$foo->methodC()_ will be triggered first, then _$foo->methodA()_, _$bar->methodD()_ and finally _$bar->methodB()_:
 
-    $eventManager->addEventListener('event.name', array($foo, 'methodA'));
-    $eventManager->addEventListener('event.name', array($bar, 'methodB'), 70);
-    $eventManager->addEventListener('event.name', array($foo, 'methodC'), 10);
-    $eventManager->addEventListener('event.name', array($bar, 'methodD'));
+    <?php
+    
+    use pallo\library\event\EventManager;
 
-    $eventManager->triggerEvent('event.name');
+    function foo(EventManager $eventManager, $foo, $bar) {
+        $eventManager->addEventListener('event.name', array($foo, 'methodA'));
+        $eventManager->addEventListener('event.name', array($bar, 'methodB'), 70);
+        $eventManager->addEventListener('event.name', array($foo, 'methodC'), 10);
+        $eventManager->addEventListener('event.name', array($bar, 'methodD'));
+    
+        $eventManager->triggerEvent('event.name');
+    }
     
 ### Through Configuration
 

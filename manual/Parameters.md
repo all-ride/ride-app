@@ -65,53 +65,67 @@ In PHP, you can retrieve a value with the following code:
 
     use pallo\library\config\Config;
 
-    $value1 = $config->get('system.memory');
-    $value2 = $config->get('unexistant.configuration.key');
-    
-    // $value1 = '8M'
-    // $value2 = null
+    function foo(Config $config) {
+        $value1 = $config->get('system.memory');
+        $value2 = $config->get('unexistant.configuration.key');
+        
+        // $value1 = '8M'
+        // $value2 = null
+    }
 
 You can pass a default value. 
 When the parameter is not set, the provided default value will be returned.
 
-    $default = 'Default value';
-    $value = $config->get('unexistant.configuration.key', $default);
+    use pallo\library\config\Config;
+
+    function foo(Config $config) {
+        $default = 'Default value';
+        $value = $config->get('unexistant.configuration.key', $default);
     
-    // $value = 'Default value';
+        // $value = 'Default value';
+    }
 
 The parameters can also act as a configuration tree. 
 You can get an array with all the defined recipients:
 
-    $recipients = $config->get('mail.recipient');
-    
-    // $recipients = array(
-    //     'john' => 'john@gmail.com',
-    //     'mark' => 'mark@gmail.com',
-    //     'sarah' => 'sarah@gmail.com'
-    // )
+    use pallo\library\config\Config;
 
-    $mail = $config->get('mail');
+    function foo(Config $config) {
+        $recipients = $config->get('mail.recipient');
+        
+        // $recipients = array(
+        //     'john' => 'john@gmail.com',
+        //     'mark' => 'mark@gmail.com',
+        //     'sarah' => 'sarah@gmail.com'
+        // )
     
-    // $mail = array(
-    //     'sender' => 'no-reply@gmail.com',
-    //     'recipients' => array(
-    //         'john' => 'john@gmail.com',
-    //         'mark' => 'mark@gmail.com',
-    //         'sarah' => 'sarah@gmail.com',
-    //     ),
-    // )
+        $mail = $config->get('mail');
+        
+        // $mail = array(
+        //     'sender' => 'no-reply@gmail.com',
+        //     'recipients' => array(
+        //         'john' => 'john@gmail.com',
+        //         'mark' => 'mark@gmail.com',
+        //         'sarah' => 'sarah@gmail.com',
+        //     ),
+        // )
+    }
 
 You can flatten fetched hierarchy if needed
 
-    $mail = $config->get('mail');
-    $mail = $config->getConfigHelper()->flattenConfig($mail);
-    
-    // $mail = array(
-    //     'sender' => 'no-reply@gmail.com',
-    //     'recipients.john' => 'john@gmail.com',
-    //     'recipients.mark' => 'mark@gmail.com',
-    //     'recipients.sarah' => 'sarah@gmail.com',
-    // )
+    use pallo\library\config\Config;
+
+    function foo(Config $config) {
+        $mail = $config->get('mail');
+        $mail = $config->getConfigHelper()->flattenConfig($mail);
+        
+        // $mail = array(
+        //     'sender' => 'no-reply@gmail.com',
+        //     'recipients.john' => 'john@gmail.com',
+        //     'recipients.mark' => 'mark@gmail.com',
+        //     'recipients.sarah' => 'sarah@gmail.com',
+        // )
+    }
 
 ## Set A Parameter
 
@@ -122,14 +136,18 @@ Assume the following configuration:
 
 And the following PHP code:
 
-    $recipients = array(
-        'john' => 'john@gmail.com',
-        'mark' => 'mark@gmail.com',
-        'sarah' => 'sarah@gmail.com',
-    );
-    
-    $config->set('mail.recipient', $recipients);
-    $config->set('system.memory', '16M');
+    use pallo\library\config\Config;
+
+    function foo(Config $config) {
+        $recipients = array(
+            'john' => 'john@gmail.com',
+            'mark' => 'mark@gmail.com',
+            'sarah' => 'sarah@gmail.com',
+        );
+        
+        $config->set('mail.recipient', $recipients);
+        $config->set('system.memory', '16M');
+    }
 
 This code will set the configuration to the following:
 
