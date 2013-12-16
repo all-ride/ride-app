@@ -209,9 +209,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
                     throw new DependencyException('Could not read properties for argument ' . $argumentStruct['name'] . ' in method ' . $dependencyCall->getMethodName() . ': properties is not an array');
                 }
 
-                foreach ($argumentStruct['properties'] as $name => $value) {
-                    $properties[$name] = $this->processParameter($value);
-                }
+                $properties = $argumentStruct['properties'];
             }
 
             $dependencyCall->addArgument(new DependencyCallArgument($argumentStruct['name'], $argumentStruct['type'], $properties));
