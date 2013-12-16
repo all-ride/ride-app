@@ -14,8 +14,7 @@ $parameters = array(
     ),
     "environment" => "dev",
 //     "initializers" => array(
-//         new ComposerSystemInitializer(),
-//         new ComposerSystemInitializer('/path/to/composer.lock'),
-//         new DirectorySystemInitializer('/path/to/modules/directory'),
+//         new ComposerSystemInitializer(__DIR__ . '/../../composer.lock'),
+//         new DirectorySystemInitializer(__DIR__ . '/../../modules'),
 //     ),
 );

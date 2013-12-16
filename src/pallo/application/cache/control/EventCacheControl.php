@@ -54,12 +54,10 @@ class EventCacheControl extends AbstractCacheControl {
      * @return null
      */
     public function enable() {
-        $io = $this->config->get('system.event.listener.cache');
-        if ($io) {
+        $io = $this->config->get('system.event.listener.default');
+        if ($io == 'cache') {
             return;
         }
-
-        $io = $this->config->get('system.event.listener.default');
 
         $this->config->set('system.event.listener.cache', $io);
         $this->config->set('system.event.listener.default', 'cache');
@@ -70,6 +68,11 @@ class EventCacheControl extends AbstractCacheControl {
      * @return null
      */
     public function disable() {
+        $io = $this->config->get('system.event.listener.default');
+        if ($io != 'cache') {
+            return;
+        }
+
         $io = $this->config->get('system.event.listener.cache');
 
         $this->config->set('system.event.listener.default', $io);

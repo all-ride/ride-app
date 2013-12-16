@@ -71,7 +71,7 @@ class DependencyArgumentParser extends LibDependencyArgumentParser {
             $default = null;
         }
 
-        return $this->config->get($key, $default);
+        return $config->get($key, $default);
     }
 
 }
