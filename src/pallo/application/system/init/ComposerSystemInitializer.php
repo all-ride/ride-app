@@ -19,16 +19,24 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
     private $lockFile;
 
     /**
+     * Path to the modules directory
+     * @var string
+     */
+    private $modulesDirectory;
+
+    /**
      * Constructs a new composer system initializer
      * @param string $lockFile Path to composer.lock
      * @return null
      */
-    public function __construct($lockFile = null) {
+    public function __construct($lockFile = null, $modulesDirectory = null) {
         if ($lockFile === null) {
             $this->lockFile = __DIR__ . '/../../../../../../../../composer.lock';
         } else {
             $this->lockFile = $lockFile;
         }
+
+        $this->modulesDirectory = $modulesDirectory;
     }
 
     /**
@@ -56,6 +64,15 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
         $fileBrowser->setApplicationDirectory($applicationDirectory);
         $fileBrowser->setPublicDirectory($publicDirectory);
 
+        // create autoloader for application and custom modules
+        $autoloader = new Autoloader();
+        $autoloader->registerAutoloader();
+
+        $applicationSrcDirectory = $applicationDirectory->getChild('src');
+        if ($applicationSrcDirectory->exists()) {
+            $autoloader->addIncludePath($applicationSrcDirectory->getAbsolutePath());
+        }
+
         // set the include directories
         $includePaths = array();
 
@@ -70,6 +87,25 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
             }
         }
 
+        // read modules from module directory
+        if ($this->modulesDirectory) {
+            $modulesDirectory = $fileSystem->getFile($this->modulesDirectory);
+            if ($modulesDirectory->isDirectory()) {
+                $moduleDirectories = $modulesDirectory->read();
+                foreach ($moduleDirectories as $moduleDirectory) {
+                    $module = $this->getModuleFromPath($moduleDirectory);
+                    if ($module) {
+                        $includePaths[$module['level']][] = $module['path'];
+                    }
+
+                    $moduleSrcDirectory = $moduleDirectory->getChild('src');
+                    if ($moduleSrcDirectory->exists()) {
+                        $autoloader->addIncludePath($moduleSrcDirectory->getAbsolutePath());
+                    }
+                }
+            }
+        }
+
         // add paths of the modules to the file browser
         ksort($includePaths);
         $includePaths = array_reverse($includePaths, true);
@@ -78,14 +114,6 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
             foreach ($includeDirectories as $includeDirectory) {
                 $fileBrowser->addIncludeDirectory($includeDirectory);
             }
-        }
-
-        // create a autoloader for application
-        $src = $applicationDirectory->getChild('src');
-        if ($src->exists()) {
-            $autoloader = new Autoloader();
-            $autoloader->registerAutoloader();
-            $autoloader->addIncludePath($src->getAbsolutePath());
         }
     }
 
