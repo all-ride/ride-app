@@ -50,7 +50,7 @@ class DirectorySystemInitializer extends AbstractSystemInitializer {
         // set the include directories
         $includePaths = array();
 
-        // read installed packages from composer
+        // read modules from the directory
         $directories = $directory->read();
         foreach ($directories as $directory) {
             $module = $this->getModuleFromPath($directory);
