@@ -26,12 +26,12 @@ Namespaces are ordered alphabetically with a deeper namespace at the top. Bundle
 
 example:
 
-    namespace pallo\app;
+    namespace ride\app;
     
-    use pallo\application\Application;
+    use ride\application\Application;
     
-    use pallo\library\validation\ValidationException;
-    use pallo\library\Timer;
+    use ride\library\validation\ValidationException;
+    use ride\library\Timer;
 
     use \Exception;
 

@@ -1,4 +1,4 @@
-The dependency injector is a very important subsystem of the Pallo framework.
+The dependency injector is a very important subsystem of the Ride framework.
 It gives the possibility to define your objects so they can be initiated when they are needed.
 Since every main object is initiated through the dependency injector, you can change those implementations to customize the system to your needs. 
 
@@ -242,20 +242,20 @@ The last defined implementation of the interface will be loaded:
     
     <?php 
     
-    use pallo\library\dependency\DependencyInjector;
+    use ride\library\dependency\DependencyInjector;
     
     function foo(DependencyInjector $dependencyInjector) {
-        $router = $dependencyInjector->get('pallo\\library\\router\\Router');
+        $router = $dependencyInjector->get('ride\\library\\router\\Router');
     }
 
 To obtain a specific implementation, you can pass an id when retrieving a dependency:
 
     <?php 
     
-    use pallo\library\dependency\DependencyInjector;
+    use ride\library\dependency\DependencyInjector;
     
     function foo(DependencyInjector $dependencyInjector) {
-        $input = $dependencyInjector->get('pallo\\library\\cli\\input\\Input', 'readline');
+        $input = $dependencyInjector->get('ride\\library\\cli\\input\\Input', 'readline');
     }
     
 This will get the input implementation for a interactive shell.
@@ -269,13 +269,13 @@ You can use tagging to obtain dependencies for a specific context:
 
     <?php 
     
-    use pallo\library\dependency\DependencyInjector;
+    use ride\library\dependency\DependencyInjector;
     
     function foo(DependencyInjector $dependencyInjector) {
         $include = array();
         $exclude = array('private');
     
-        $commands = $dependencyInjector->getByTag('pallo\\library\\cli\\command\\Command', $include, $exclude);
+        $commands = $dependencyInjector->getByTag('ride\\library\\cli\\command\\Command', $include, $exclude);
     }
     
 ### Get All Dependencies
@@ -284,10 +284,10 @@ To get all implementation of a interface, you can call:
 
     <?php 
     
-    use pallo\library\dependency\DependencyInjector;
+    use ride\library\dependency\DependencyInjector;
     
     function foo(DependencyInjector $dependencyInjector) {
-        $commands = $dependencyInjector->getAll('pallo\\library\\cli\\command\\Command');
+        $commands = $dependencyInjector->getAll('ride\\library\\cli\\command\\Command');
     }
 
 ### Using DependencyInjector As A Factory
@@ -299,8 +299,8 @@ The additional defined calls of the dependency are skipped and the instance will
 
     <?php 
     
-    use pallo\library\dependency\DependencyInjector;
+    use ride\library\dependency\DependencyInjector;
     
     function foo(DependencyInjector $dependencyInjector) {
-        $validator = $dependencyInjector->get('pallo\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5)));
+        $validator = $dependencyInjector->get('ride\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5)));
     }

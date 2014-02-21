@@ -1,4 +1,4 @@
-Pallo has a simple but powerful event manager for inserting dynamic logic or changing system behaviour.
+Ride has a simple but powerful event manager for inserting dynamic logic or changing system behaviour.
 
 Events are triggered by name and can be dispatched to functions and/or method calls. 
 These are called the event listeners. Any valid PHP callback can work as a event listener.
@@ -11,7 +11,7 @@ A event can be triggered with a simple call to the event manager:
 
     <?php 
     
-    use pallo\library\event\EventManager;
+    use ride\library\event\EventManager;
 
     function foo(EventManager $eventManager) {    
         $arguments = array(
@@ -29,7 +29,7 @@ A listener for this sample event could look like:
 
     <?php
      
-    use pallo\library\event\Event;
+    use ride\library\event\Event;
 
     function foo(Event $event) {
         $argument1 = $event->getArgument('argument1');
@@ -43,8 +43,8 @@ The instance will be injected by the dependency injector:
 
     <?php
 
-    use pallo\library\event\Event;    
-    use pallo\library\system\System;
+    use ride\library\event\Event;    
+    use ride\library\system\System;
     
     funtion bar(Event $event, System $system) {
         ...
@@ -56,7 +56,7 @@ You can stop the event by calling _setPreventDefault_:
 
     <?php
     
-    use pallo\library\event\Event;
+    use ride\library\event\Event;
 
     function foo(Event $event) {
         $event->setPreventDefault();
@@ -70,7 +70,7 @@ You can register a event listener to the event manager using the call:
 
     <?php
     
-    use pallo\library\event\EventManager;
+    use ride\library\event\EventManager;
 
     function foo(EventManager $eventManager) {
         $eventManager->addEventListener('event.name', 'callback');
@@ -89,7 +89,7 @@ In the following example, _$bar->method()_ would be triggered before _$foo->meth
 
     <?php
     
-    use pallo\library\event\EventManager;
+    use ride\library\event\EventManager;
 
     function foo(EventManager $eventManager, $foo, $bar) {
         $eventManager->addEventListener('event.name', array($foo, 'method'));
@@ -102,7 +102,7 @@ In the following example, _$foo->methodC()_ will be triggered first, then _$foo-
 
     <?php
     
-    use pallo\library\event\EventManager;
+    use ride\library\event\EventManager;
 
     function foo(EventManager $eventManager, $foo, $bar) {
         $eventManager->addEventListener('event.name', array($foo, 'methodA'));

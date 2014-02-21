@@ -1,6 +1,6 @@
 ## Used Directories
 
-The following directories are used by Pallo:
+The following directories are used by Ride:
 
 * __public__  
 This is your actual web root. 

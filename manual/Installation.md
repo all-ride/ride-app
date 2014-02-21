@@ -18,12 +18,12 @@ You can do this with the following command:
 
 Now you can run the following command to install the web interface: 
 
-    php composer.phar require pallo/setup-web:dev-master
+    php composer.phar require ride/setup-web:dev-master
     
 If you want the CLI:
 
-    php composer.phar require pallo/setup-cli:dev-master
+    php composer.phar require ride/setup-cli:dev-master
     
 All in one:
 
-    curl -sS https://getcomposer.org/installer | php && echo '{"minimum-stability": "dev"}' > composer.json && php composer.phar require pallo/setup-web:dev-master && php composer.phar require pallo/setup-cli:dev-master
+    curl -sS https://getcomposer.org/installer | php && echo '{"minimum-stability": "dev"}' > composer.json && php composer.phar require ride/setup-web:dev-master && php composer.phar require ride/setup-cli:dev-master
