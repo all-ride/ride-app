@@ -15,7 +15,7 @@ Messages of normal insignificant events of the application (template rendered, e
 
     <?php
     
-    use pallo\library\log\Log;
+    use ride\library\log\Log;
 
     function foo(Log $log) {
         $log->logInformation('Log message', 'an optional description', 'name of the log source');
@@ -25,7 +25,7 @@ You can also easily log exceptions:
 
     <?php
 
-    use pallo\library\log\Log;
+    use ride\library\log\Log;
 
     function foo(Log $log) {
         try {
@@ -37,7 +37,7 @@ You can also easily log exceptions:
         }
     }
 
-For a full overview of the log methods, check the API of the [pallo\library\log\Log](docs/api/class/pallo/library/log/Log) class.
+For a full overview of the log methods, check the API of the [ride\library\log\Log](docs/api/class/ride/library/log/Log) class.
 
 ## Log Listeners
 
@@ -52,8 +52,8 @@ First, create your listener:
 
     namespace foo/log/listener;
 
-    use pallo\library\log\listener\LogListener;
-    use pallo\library\log\LogMessage;
+    use ride\library\log\listener\LogListener;
+    use ride\library\log\LogMessage;
 
     class FooLogListener implements LogListener {
         
@@ -69,11 +69,11 @@ Then you add it to the log using the dependencies:
         "dependencies": [
             {
                 "class": "foo\\log\\listener\\FooLogListener",
-                "interfaces": "pallo\\library\\log\\listener\\LogListener",
+                "interfaces": "ride\\library\\log\\listener\\LogListener",
                 "id": "foo"
             },
             {
-                "interfaces": "pallo\\library\\log\\Log",
+                "interfaces": "ride\\library\\log\\Log",
                 "extends": "app",
                 "id": "app",
                 "calls": [
@@ -84,7 +84,7 @@ Then you add it to the log using the dependencies:
                                 "name": "listener",
                                 "type": "dependency",
                                 "properties": {
-                                    "interface": "pallo\\library\\log\\listener\\LogListener",
+                                    "interface": "ride\\library\\log\\listener\\LogListener",
                                     "id": "foo"
                                 }
                             }
@@ -95,4 +95,4 @@ Then you add it to the log using the dependencies:
         ]
     }
     
-You can use the [pallo\library\log\listener\AbstractLogListener](/docs/api/class/pallo/library/log/listener/AbstractLogListener) class as a base for your listener.    
+You can use the [ride\library\log\listener\AbstractLogListener](/docs/api/class/ride/library/log/listener/AbstractLogListener) class as a base for your listener.    

@@ -1,4 +1,4 @@
-The basic configuration of Pallo is achieved through a set of key-value pairs, called a parameter. 
+The basic configuration of Ride is achieved through a set of key-value pairs, called a parameter. 
 The parts of a key are separated with a _._ (dot). 
 
 The parameters are read from the _config_ directory in the module directory structure.  
@@ -63,7 +63,7 @@ Some examples, assume the following configuration:
 
 In PHP, you can retrieve a value with the following code:
 
-    use pallo\library\config\Config;
+    use ride\library\config\Config;
 
     function foo(Config $config) {
         $value1 = $config->get('system.memory');
@@ -76,7 +76,7 @@ In PHP, you can retrieve a value with the following code:
 You can pass a default value. 
 When the parameter is not set, the provided default value will be returned.
 
-    use pallo\library\config\Config;
+    use ride\library\config\Config;
 
     function foo(Config $config) {
         $default = 'Default value';
@@ -88,7 +88,7 @@ When the parameter is not set, the provided default value will be returned.
 The parameters can also act as a configuration tree. 
 You can get an array with all the defined recipients:
 
-    use pallo\library\config\Config;
+    use ride\library\config\Config;
 
     function foo(Config $config) {
         $recipients = $config->get('mail.recipient');
@@ -113,7 +113,7 @@ You can get an array with all the defined recipients:
 
 You can flatten fetched hierarchy if needed
 
-    use pallo\library\config\Config;
+    use ride\library\config\Config;
 
     function foo(Config $config) {
         $mail = $config->get('mail');
@@ -136,7 +136,7 @@ Assume the following configuration:
 
 And the following PHP code:
 
-    use pallo\library\config\Config;
+    use ride\library\config\Config;
 
     function foo(Config $config) {
         $recipients = array(
@@ -169,10 +169,10 @@ The path of the module, it can be used to create correct paths for files in your
 * __%public%__  
 The path of the public directory
 
-Assume the file _/var/www/pallo/modules/foo/config/parameters.json_ with content:
+Assume the file _/var/www/ride/modules/foo/config/parameters.json_ with content:
     
     { "bar.data.counties": "%path%/data/countries.txt" }
 
 The value of _bar.data.countries_ will be
     
-    /var/www/pallo/modules/foo/data/countries.txt
+    /var/www/ride/modules/foo/data/countries.txt
