@@ -1,12 +1,12 @@
 <?php
 
-use pallo\application\system\init\ComposerSystemInitializer;
-use pallo\application\system\init\DirectorySystemInitializer;
+use ride\application\system\init\ComposerSystemInitializer;
+use ride\application\system\init\DirectorySystemInitializer;
 
 /**
- * Parameters for a Pallo system
+ * Parameters for a Ride system
  * @var array
- * @see pallo\application\system\System
+ * @see ride\application\system\System
  */
 $parameters = array(
     "cache" => array(
