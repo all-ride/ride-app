@@ -105,7 +105,6 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
             }
 
             if (isset($dependencyStruct['extends'])) {
-
                 if (isset($dependencyStruct['interfaces']) && !is_array($dependencyStruct['interfaces'])) {
                     $interface = $dependencyStruct['interfaces'];
                 } else {
