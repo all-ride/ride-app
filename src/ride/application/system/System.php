@@ -19,10 +19,8 @@ use ride\library\dependency\DependencyInjector;
 use ride\library\reflection\ReflectionHelper;
 use ride\library\system\exception\SystemException;
 use ride\library\system\file\browser\GenericFileBrowser;
-use ride\library\system\file\browser\FileBrowser;
 use ride\library\system\System as LibSystem;
 use ride\library\ErrorHandler;
-use ride\library\String;
 use ride\library\Timer;
 
 /**

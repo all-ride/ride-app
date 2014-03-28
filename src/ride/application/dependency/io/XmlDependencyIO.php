@@ -99,7 +99,7 @@ class XmlDependencyIO extends AbstractIO implements DependencyIO {
 
     /**
      * Constructs a new XML dependency IO
-     * @param ride\core\environment\filebrowser\FileBrowser $fileBrowser
+     * @param \ride\library\system\file\browser\FileBrowser $fileBrowser
      * @param string $environment
      * @return null
      */
@@ -109,8 +109,8 @@ class XmlDependencyIO extends AbstractIO implements DependencyIO {
 
     /**
      * Gets the dependency container
-     * @param ride\core\Zibo $ride Instance of ride
-     * @return ride\core\dependency\DependencyContainer
+     * @param \ride\library\system\System $ride Instance of ride
+     * @return \ride\library\dependency\DependencyContainer
      */
     public function getDependencyContainer() {
         $container = new DependencyContainer();
@@ -140,8 +140,8 @@ class XmlDependencyIO extends AbstractIO implements DependencyIO {
     /**
      * Reads the dependencies from the provided file and adds them to the
      * provided container
-     * @param ride\library\dependency\DependencyContainer $container
-     * @param ride\library\system\file\File $file
+     * @param \ride\library\dependency\DependencyContainer $container
+     * @param \ride\library\system\file\File $file
      * @return null
      */
     private function readDependencies(DependencyContainer $container, File $file) {
@@ -188,7 +188,7 @@ class XmlDependencyIO extends AbstractIO implements DependencyIO {
      * Reads the calls from the provided dependency element and adds them to
      * the dependency instance
      * @param DOMElement $dependencyElement
-     * @param ride\library\dependency\Dependency $dependency
+     * @param \ride\library\dependency\Dependency $dependency
      * @return null
      */
     private function readCalls(DOMElement $dependencyElement, Dependency $dependency) {
@@ -225,7 +225,7 @@ class XmlDependencyIO extends AbstractIO implements DependencyIO {
      * Reads the interfaces from the provided dependency element and adds them
      * to the dependency instance
      * @param DOMElement $dependencyElement
-     * @param ride\library\dependency\Dependency $dependency
+     * @param \ride\library\dependency\Dependency $dependency
      * @param string $interface Class name of the interface
      * @param string $className Class name of the instance
      * @return null

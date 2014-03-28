@@ -20,19 +20,19 @@ class LoggedEventManager extends GenericEventManager {
 
     /**
      * Instance of the log
-     * @var ride\library\log\Log
+     * @var \ride\library\log\Log
      */
     protected $log;
 
     /**
      * Decorator for logged values
-     * @var ride\library\decorator\Decorator
+     * @var \ride\library\decorator\Decorator
      */
     protected $valueDecorator;
 
     /**
      * Sets the instance of the log
-     * @param ride\library\log\Log $log
+     * @param \ride\library\log\Log $log
      * @return null
      */
     public function setLog(Log $log) {
@@ -41,7 +41,7 @@ class LoggedEventManager extends GenericEventManager {
 
     /**
      * Sets the value decorator for logged values
-     * @param ride\library\decorator\Decorator
+     * @param \ride\library\decorator\Decorator
      * @return null
      */
     public function setValueDecorator(Decorator $valueDecorator = null) {
