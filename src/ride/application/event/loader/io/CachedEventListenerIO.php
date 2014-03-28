@@ -22,15 +22,15 @@ class CachedEventListenerIO implements EventListenerIO {
 
     /**
      * File to write the cache to
-     * @var ride\library\system\file\File
+     * @var \ride\library\system\file\File
      */
     private $file;
 
     /**
      * Constructs a new cached EventIO
-     * @param ride\library\event\loader\io\EventListenerIO $io EventIO which
+     * @param \ride\library\event\loader\io\EventListenerIO $io EventIO which
      * needs a cache
-     * @param ride\library\system\file\File $file File for the cache
+     * @param \ride\library\system\file\File $file File for the cache
      * @return null
      */
     public function __construct(EventListenerIO $io, File $file) {
@@ -40,7 +40,7 @@ class CachedEventListenerIO implements EventListenerIO {
 
     /**
      * Sets the file for the generated code
-     * @param ride\library\system\file\File $file File to generate the code in
+     * @param \ride\library\system\file\File $file File to generate the code in
      * @return null
      */
     public function setFile(File $file) {
@@ -49,7 +49,7 @@ class CachedEventListenerIO implements EventListenerIO {
 
     /**
      * Gets the file for the generated code
-     * @return ride\library\system\file\File File to generate the code in
+     * @return \ride\library\system\file\File File to generate the code in
      * @return null
      */
     public function getFile() {

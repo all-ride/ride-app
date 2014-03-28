@@ -11,7 +11,7 @@ interface SystemInitializer {
 
     /**
      * Initializes the system eg. by setting the file browser paths
-     * @param ride\application\system\System $system Instance of the system
+     * @param \ride\application\system\System $system Instance of the system
      * @return null
      */
     public function initializeSystem(System $system);

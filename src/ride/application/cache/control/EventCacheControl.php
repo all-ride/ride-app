@@ -32,8 +32,8 @@ class EventCacheControl extends AbstractCacheControl {
 
     /**
      * Constructs a new event cache control
-     * @param ride\library\event\loader\io\EventListenerIO $io
-     * @param ride\library\config\Config $config
+     * @param \ride\library\event\loader\io\EventListenerIO $io
+     * @param \ride\library\config\Config $config
      * @return null
      */
     public function __construct(EventListenerIO $io, Config $config) {

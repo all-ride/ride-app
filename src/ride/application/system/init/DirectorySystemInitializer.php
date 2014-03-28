@@ -4,7 +4,6 @@ namespace ride\application\system\init;
 
 use ride\application\system\System;
 
-use ride\library\system\exception\SystemException;
 use ride\library\Autoloader;
 
 /**
@@ -30,7 +29,7 @@ class DirectorySystemInitializer extends AbstractSystemInitializer {
 
     /**
      * Initializes the system eg. by setting the file browser paths
-     * @param ride\application\system\System $system Instance of the system
+     * @param \ride\application\system\System $system Instance of the system
      * @return null
      */
     public function initializeSystem(System $system) {

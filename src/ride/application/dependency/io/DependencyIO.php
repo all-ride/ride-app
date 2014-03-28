@@ -9,7 +9,7 @@ interface DependencyIO {
 
     /**
      * Gets a dependency container
-     * @return ride\library\dependency\DependencyContainer
+     * @return \ride\library\dependency\DependencyContainer
      */
     public function getDependencyContainer();
 

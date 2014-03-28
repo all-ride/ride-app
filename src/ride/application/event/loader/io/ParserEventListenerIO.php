@@ -18,20 +18,20 @@ class ParserEventListenerIO extends AbstractIO implements EventListenerIO {
 
     /**
      * Instance of the configuration
-     * @var ride\library\config\parser\Parser
+     * @var \ride\library\config\parser\Parser
      */
     protected $parser;
 
     /**
      * Instance of the config helper
-     * @var ride\library\config\ConfigHelper
+     * @var \ride\library\config\ConfigHelper
      */
     protected $helper;
 
     /**
      * Constructs a new parser event listener IO
-     * @param ride\library\system\file\browser\FileBrowser $fileBrowser
-     * @param ride\library\config\parser\Parser $parser
+     * @param \ride\library\system\file\browser\FileBrowser $fileBrowser
+     * @param \ride\library\config\parser\Parser $parser
      * @param string $file
      * @param string $path
      * @return null
@@ -81,7 +81,7 @@ class ParserEventListenerIO extends AbstractIO implements EventListenerIO {
 
     /**
      * Reads the events file
-     * @param ride\library\system\file\File $file File to read
+     * @param \ride\library\system\file\File $file File to read
      * @return array Array with EventListener objects
      */
     public function readEventListenersFromFile(File $file) {

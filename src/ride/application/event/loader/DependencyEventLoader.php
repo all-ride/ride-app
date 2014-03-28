@@ -5,7 +5,6 @@ namespace ride\application\event\loader;
 use ride\library\dependency\DependencyInjector;
 use ride\library\event\loader\io\EventListenerIO;
 use ride\library\event\loader\GenericEventLoader;
-use ride\library\event\EventManager;
 
 /**
  * Dependency implementation of a event loader
@@ -14,14 +13,14 @@ class DependencyEventLoader extends GenericEventLoader {
 
     /**
      * Instance of the dependency injector
-     * @var zibo\library\dependency\DependencyInjector
+     * @var \ride\library\dependency\DependencyInjector
      */
     protected $dependencyInjector;
 
     /**
      * Constructs a new event loader
-     * @param ride\library\dependency\DependencyInjector $dependencyInjector
-     * @param ride\application\event\io\EventIO $io
+     * @param \ride\library\dependency\DependencyInjector $dependencyInjector
+     * @param \ride\library\event\loader\io\EventListenerIO $io
      * @return null
      */
     public function __construct(EventListenerIO $io, DependencyInjector $dependencyInjector) {
