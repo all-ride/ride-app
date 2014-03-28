@@ -23,13 +23,13 @@ class ConfigEventListenerIO extends AbstractIO implements EventListenerIO {
 
     /**
      * Instance of the configuration
-     * @var ride\library\config\Config
+     * @var \ride\library\config\Config
      */
     protected $config;
 
     /**
      * Constructs a new XML dependency IO
-     * @param ride\core\environment\filebrowser\FileBrowser $fileBrowser
+     * @param /ride\core\environment\filebrowser\FileBrowser $fileBrowser
      * @param string $environment
      * @return null
      */
@@ -77,7 +77,7 @@ class ConfigEventListenerIO extends AbstractIO implements EventListenerIO {
 
     /**
      * Reads the events file
-     * @param zibo\library\filesystem\File $file File to read
+     * @param \ride\library\system\file\File $file File to read
      * @return array Array with Event objects
      * @throws Exception when a event line is invalid
      */

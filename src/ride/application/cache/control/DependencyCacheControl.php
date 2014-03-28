@@ -33,8 +33,8 @@ class DependencyCacheControl extends AbstractCacheControl {
 
     /**
      * Constructs a new dependency cache control
-     * @param ride\application\dependency\io\DependencyIO $io
-     * @param ride\library\config\Config $config
+     * @param \ride\application\dependency\io\DependencyIO $io
+     * @param \ride\library\config\Config $config
      * @return null
      */
     public function __construct(DependencyIO $io, Config $config) {

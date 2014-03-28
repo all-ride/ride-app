@@ -18,13 +18,13 @@ class ParameterCacheControl extends AbstractCacheControl {
 
     /**
      * Instance of configuration I/O
-     * @var ride\library\config\io\ConfigIO
+     * @var \ride\library\config\io\ConfigIO
      */
     private $io;
 
     /**
      * Constructs a new cache control
-     * @param ride\library\config\io\ConfigIO $io
+     * @param \ride\library\config\io\ConfigIO $io
      * @return null
      */
     public function __construct(ConfigIO $io) {
@@ -33,7 +33,7 @@ class ParameterCacheControl extends AbstractCacheControl {
 
     /**
      * Gets whether this cache is enabled
-     * @param zibo\core\Zibo $zibo Instance of Zibo
+     * @param \ride\core\Ride $ride Instance of Ride
      * @return boolean
      */
     public function isEnabled() {
