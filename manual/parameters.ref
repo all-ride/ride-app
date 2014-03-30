@@ -2,12 +2,12 @@ log.file                          Path to the log file.
 log.level                         Level of messages to log. 0 for everything, 1 for errors, 2 for warnings, 4 for information messages and 8 for debug messages.
 log.truncate                      Maximum size for the log file in kb.
 system.application                Dependency id of the default application
-system.binary.%command%           Full path to a binary command 
+system.binary.%command%           Full path to a binary command
 system.cache.dependencies         Flag to see if the dependencies should be cached
 system.cache.event                Path to the file name of the event cache
 system.event.loader               Dependency id of the event loader
 system.event.listener.default     Dependency id of the event listener IO in use
 system.event.listener.cache       Dependency id of the cached event listener IO
-system.name                       Name of the system, defaults to Pallo
+system.name                       Name of the system, defaults to Ride
 system.secret                     Secret key of the system for encryption and security
 system.timezone                   Timezone for this application
