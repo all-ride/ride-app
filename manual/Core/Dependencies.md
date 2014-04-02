@@ -1,6 +1,6 @@
 The dependency injector is a very important subsystem of the Ride framework.
 It gives the possibility to define your objects so they can be initiated when they are needed.
-Since every main object is initiated through the dependency injector, you can change those implementations to customize the system to your needs. 
+Since every main object is initiated through the dependency injector, you can change those implementations to customize the system to your needs.
 
 ## Defining Dependencies
 
@@ -9,15 +9,15 @@ Since every main object is initiated through the dependency injector, you can ch
 A dependency is a definition of a class instance.
 It contains the following attributes:
 
-* __class name__: 
+* __class name__:
 Full class name of the object. This is the only required attribute.
-* __interface(s)__: 
+* __interface(s)__:
 Define the interfaces this class implements. Defaults to the class name.
-* __id__: 
-Id of the instance. 
+* __id__:
+Id of the instance.
 Id's on itself are not unique, the actual id is the combination of interface and id.
 This means different interfaces can hold the same id but it still is a different instance.
-* __calls__: 
+* __calls__:
 Constructor and additional method call definitions
 
 ### Dependency Call
@@ -29,31 +29,31 @@ A dependency call consists of the __method name__ and optionally some __argument
 
 You have different type of arguments:
 
-* __null__  
+* __null__
 Force a null value, this argument has no properties
-* __scalar__  
+* __scalar__
 A scalar value which can be set using _value_ as property name.
-* __array__  
+* __array__
 A array value which consists of all the set properties.
-* __parameter__  
-A parameter from the configuration. The _key_ property name is used to define the parameter. 
+* __parameter__
+A parameter from the configuration. The _key_ property name is used to define the parameter.
 You can set a default value for the parameter by setting the _default_ property;
-* __dependency__  
+* __dependency__
 A dependency can again be inserted into another definition.
 Set the _interface_ property to define the dependency.
-You can optionally set the _id_ property to specify the instance.  
-* __call__  
+You can optionally set the _id_ property to specify the instance.
+* __call__
 With this type, you can call a function, a static method or a method on a defined dependency.
     * Set the property _function_ with the name to invoke a function.
     * To invoke a static method, set the property _class_ with the name of the class and the property _method_ with the name of the method.
-    * To invoke a method on a dependency, you can set the _interface_ property with a optional _id_ property to define the dependency. Set the _method_ property to define the method.  
+    * To invoke a method on a dependency, you can set the _interface_ property with a optional _id_ property to define the dependency. Set the _method_ property to define the method.
 
 When using a dependency in your argument (dependency or call), you can define the id as a configuration parameter.
-To do so, prefix and suffix your id with _%_. 
+To do so, prefix and suffix your id with _%_.
 To fallback to a default value, pipe the default value after the configuration key
 
     %my.config.key|default%
-    
+
 To define the constructor of a dependency, simply add the _\_\_construct_ method to the definition.
 
 ### dependencies.json
@@ -71,8 +71,8 @@ The most simple definition of a dependency is a class definition.
         ]
     }
 
-To define a implementation of a interface, you can use the following dependency definition: 
-    
+To define a implementation of a interface, you can use the following dependency definition:
+
     {
         "dependencies": [
             {
@@ -84,7 +84,7 @@ To define a implementation of a interface, you can use the following dependency 
     }
 
 When your dependency implements more then one interface, you can set an array in the _interfaces_ property:
-    
+
     {
         "dependencies": [
             {
@@ -94,9 +94,9 @@ When your dependency implements more then one interface, you can set an array in
             }
         ]
     }
-    
+
 You can tag your dependencies:
-    
+
     {
         "dependencies": [
             {
@@ -167,7 +167,7 @@ You can define calls to your instance to make sure it's ready to work:
 
 #### Extending Dependencies
 
-Assume the following configuration in a low level module:
+Assume the following configuration in a module with a low level:
 
     {
         "dependencies": [
@@ -194,9 +194,9 @@ Assume the following configuration in a low level module:
             }
         ]
     }
-    
-The configuration of a a higher level module:    
-    
+
+The configuration in a module with a higher level:
+
     {
         "dependencies": [
             {
@@ -222,7 +222,7 @@ The configuration of a a higher level module:
             }
         ]
     }
-    
+
 Your Authenticator with id chain will now contain the authenticators of vendorA and vendorB.
 
 _Note: The id is reassigned in order to actually extend it, if you omit it, you will create a new dependency based on chain._
@@ -230,34 +230,34 @@ _Note: The id is reassigned in order to actually extend it, if you omit it, you 
 ## Obtaining Dependencies
 
 You should avoid using the dependency injector directly in your code.
-Instead, use your dependency configuration to inject the needed instances in your code. 
+Instead, use your dependency configuration to inject the needed instances in your code.
 This makes your code independant and more portable to other systems.
 
 There are situations where you want to program to the dependency injector. (eg factory implementation that will implement the dependency injector in your subsystem, ...)
 
 ### Get A Dependency
 
-The most generic way to get a dependency is by providing only the interface. 
+The most generic way to get a dependency is by providing only the interface.
 The last defined implementation of the interface will be loaded:
-    
-    <?php 
-    
+
+    <?php
+
     use ride\library\dependency\DependencyInjector;
-    
+
     function foo(DependencyInjector $dependencyInjector) {
         $router = $dependencyInjector->get('ride\\library\\router\\Router');
     }
 
 To obtain a specific implementation, you can pass an id when retrieving a dependency:
 
-    <?php 
-    
+    <?php
+
     use ride\library\dependency\DependencyInjector;
-    
+
     function foo(DependencyInjector $dependencyInjector) {
         $input = $dependencyInjector->get('ride\\library\\cli\\input\\Input', 'readline');
     }
-    
+
 This will get the input implementation for a interactive shell.
 
 Loaded instances are kept in memory.
@@ -267,25 +267,25 @@ When the same dependency is requested multiple times, only a single instance is 
 
 You can use tagging to obtain dependencies for a specific context:
 
-    <?php 
-    
+    <?php
+
     use ride\library\dependency\DependencyInjector;
-    
+
     function foo(DependencyInjector $dependencyInjector) {
         $include = array();
         $exclude = array('private');
-    
+
         $commands = $dependencyInjector->getByTag('ride\\library\\cli\\command\\Command', $include, $exclude);
     }
-    
+
 ### Get All Dependencies
 
 To get all implementation of a interface, you can call:
 
-    <?php 
-    
+    <?php
+
     use ride\library\dependency\DependencyInjector;
-    
+
     function foo(DependencyInjector $dependencyInjector) {
         $commands = $dependencyInjector->getAll('ride\\library\\cli\\command\\Command');
     }
@@ -294,13 +294,15 @@ To get all implementation of a interface, you can call:
 
 By passing construct arguments, you can let the dependency injector act as a factory.
 
-The dependency injector will use the provided arguments for the constructor of the instance. 
-The additional defined calls of the dependency are skipped and the instance will not be kept in the memory of the dependency injector.
+The dependency injector will use the provided arguments for the constructor of the instance.
+The instance will not be kept in the memory of the dependency injector.
+Additional defined calls of the dependency are skipped by default but can be invoked by setting the $invokeCalls argument to true.
 
-    <?php 
-    
+    <?php
+
     use ride\library\dependency\DependencyInjector;
-    
+
     function foo(DependencyInjector $dependencyInjector) {
-        $validator = $dependencyInjector->get('ride\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5)));
+        $validator = $dependencyInjector->get('ride\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5))); // additional calls wont be invoked
+        $validator = $dependencyInjector->get('ride\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5)), true); // additional calls will be invoked
     }
