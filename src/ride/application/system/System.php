@@ -8,6 +8,7 @@ use ride\application\dependency\argument\DependencyArgumentParser;
 use ride\application\dependency\io\CachedDependencyIO;
 use ride\application\dependency\io\ParserDependencyIO;
 use ride\application\system\init\ComposerSystemInitializer;
+use ride\application\system\init\SystemInitializer;
 
 use ride\library\config\io\CachedConfigIO;
 use ride\library\config\io\ParserConfigIO;
@@ -15,15 +16,12 @@ use ride\library\config\parser\JsonParser;
 use ride\library\config\GenericConfig;
 use ride\library\config\ConfigHelper;
 use ride\library\dependency\DependencyInjector;
-use ride\library\log\Log;
 use ride\library\reflection\ReflectionHelper;
+use ride\library\system\exception\SystemException;
 use ride\library\system\file\browser\GenericFileBrowser;
-use ride\library\system\file\browser\FileBrowser;
 use ride\library\system\System as LibSystem;
 use ride\library\ErrorHandler;
-use ride\library\String;
 use ride\library\Timer;
-use ride\application\system\init\SystemInitializer;
 
 /**
  * Factory for Ride applications
@@ -92,19 +90,19 @@ class System extends LibSystem {
 
     /**
      * Instance of the file browser
-     * @var ride\library\system\file\browser\FileBrowser
+     * @var \ride\library\system\file\browser\FileBrowser
      */
     protected $fileBrowser;
 
     /**
      * Instance of the config
-     * @var ride\library\config\Config
+     * @var \ride\library\config\Config
      */
     protected $config;
 
     /**
      * Instance of the dependency injector
-     * @var ride\library\dependency\DependencyInjector
+     * @var \ride\library\dependency\DependencyInjector
      */
     protected $dependencyInjector;
 
@@ -156,7 +154,7 @@ class System extends LibSystem {
 
     /**
      * Gets the dependency injector
-     * @return ride\library\dependency\DependencyInjector
+     * @return \ride\library\dependency\DependencyInjector
      */
     public function getDependencyInjector() {
         if (!$this->dependencyInjector) {
@@ -168,7 +166,7 @@ class System extends LibSystem {
 
     /**
      * Creates the dependency injector
-     * @return ride\library\dependency\DependencyInjector
+     * @return \ride\library\dependency\DependencyInjector
      */
     protected function createDependencyInjector() {
         $config = $this->getConfig();
@@ -209,7 +207,7 @@ class System extends LibSystem {
 
     /**
      * Creates the dependency IO
-     * @return ride\application\dependency\io\XmlDependencyIO
+     * @return \ride\application\dependency\io\XmlDependencyIO
      */
     protected function createDependencyIO() {
         $fileBrowser = $this->getFileBrowser();
@@ -232,7 +230,7 @@ class System extends LibSystem {
 
     /**
      * Gets the configuration
-     * @return ride\library\config\Config
+     * @return \ride\library\config\Config
      */
     public function getConfig() {
         if (!$this->config) {
@@ -277,7 +275,7 @@ class System extends LibSystem {
 
     /**
      * Gets the file browser
-     * @return ride\library\system\file\browser\FileBrowser
+     * @return \ride\library\system\file\browser\FileBrowser
      */
     public function getFileBrowser() {
         if ($this->fileBrowser) {
@@ -295,7 +293,7 @@ class System extends LibSystem {
 
     /**
      * Creates the file browser
-     * @return ride\library\system\file\browser\FileBrowser
+     * @return \ride\library\system\file\browser\FileBrowser
      */
     protected function createFileBrowser() {
         $this->getFileSystem();
@@ -309,7 +307,7 @@ class System extends LibSystem {
     /**
      * Invoke the system initializers
      * @return null
-     * @throws ride\library\system\exception\SystemException when a non
+     * @throws \ride\library\system\exception\SystemException when a non
      * SystemInitializer instance is detected
      */
     protected function initializeSystem() {
@@ -377,6 +375,44 @@ class System extends LibSystem {
 
         $app = $this->getDependencyInjector()->get('ride\\application\\Application', $id);
         $app->service();
+    }
+
+    /**
+     * Executes a single command on the system
+     * @param string $command Command string
+     * @param integer $code Return code of the command
+     * @return array Output of the command
+     * @throws \ride\library\system\exception\SystemException when the command
+     * could not be executed
+     */
+    protected function executeCommand($command, &$code = null) {
+        try {
+            $log = $this->getDependencyInjector()->get('ride\\library\\log\\Log');
+        } catch (DependencyNotFoundException $exception) {
+
+        }
+
+        if ($log) {
+            $log->logDebug('Executing command', $command);
+        }
+
+        $executeException = null;
+
+        try {
+            $output = parent::executeCommand($command, $code);
+        } catch (SystemException $exception) {
+            $executeException = $exception;
+        }
+
+        if ($log) {
+            $log->logDebug('Executed command', $command . ' returned ' . $code);
+        }
+
+        if ($executeException) {
+            throw $executeException;
+        }
+
+        return $output;
     }
 
 }

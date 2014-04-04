@@ -19,13 +19,13 @@ class DependencyArgumentParser extends LibDependencyArgumentParser {
 
     /**
      * Instance of the configuration
-     * @var ride\library\config\Config
+     * @var \ride\library\config\Config
      */
     protected $config;
 
     /**
      * Constructs a new dependency argument parser
-     * @param ride\library\config\Config $config
+     * @param \ride\library\config\Config $config
      * @return null
      */
     public function __construct(Config $config) {
@@ -34,7 +34,7 @@ class DependencyArgumentParser extends LibDependencyArgumentParser {
 
     /**
      * Gets the id of the dependency
-     * @param zibo\library\dependency\DependencyCallArgument $argument
+     * @param \ride\library\dependency\DependencyCallArgument $argument
      * @return string|null
      */
     protected function getDependencyId(DependencyCallArgument $argument) {
@@ -48,7 +48,7 @@ class DependencyArgumentParser extends LibDependencyArgumentParser {
      * Processes the id as a Zibo parameter if it's delimited by the parameter
      * delimiter
      * @param string|null $id A dependency id
-     * @param zibo\library\config\Config $config Instance of the parameter
+     * @param \ride\library\config\Config $config Instance of the parameter
      * configuration
      * @return string|null
      * @todo get rid of the static state of this method

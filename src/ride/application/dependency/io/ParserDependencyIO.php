@@ -21,14 +21,14 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
 
     /**
      * Parser for the configuration files
-     * @var ride\library\config\parser\Parser
+     * @var \ride\library\config\parser\Parser
      */
     protected $parser;
 
     /**
      * Constructs a new XML dependency IO
-     * @param ride\library\system\file\browser\FileBrowser $fileBrowser
-     * @param ride\library\config\parser\Parser $parser
+     * @param \ride\library\system\file\browser\FileBrowser $fileBrowser
+     * @param \ride\library\config\parser\Parser $parser
      * @param string $file
      * @param string $path
      * @return null
@@ -41,7 +41,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
 
     /**
      * Gets the dependency container
-     * @return ride\core\dependency\DependencyContainer
+     * @return \ride\library\dependency\DependencyContainer
      */
     public function getDependencyContainer() {
         $container = new DependencyContainer();
@@ -71,8 +71,8 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
     /**
      * Reads the dependencies from the provided file and adds them to the
      * provided container
-     * @param ride\library\dependency\DependencyContainer $container
-     * @param ride\library\system\file\File $file
+     * @param \ride\library\dependency\DependencyContainer $container
+     * @param \ride\library\system\file\File $file
      * @return null
      */
     protected function readDependencies(DependencyContainer $container, File $file) {
@@ -105,7 +105,6 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
             }
 
             if (isset($dependencyStruct['extends'])) {
-
                 if (isset($dependencyStruct['interfaces']) && !is_array($dependencyStruct['interfaces'])) {
                     $interface = $dependencyStruct['interfaces'];
                 } else {
@@ -145,7 +144,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
      * Reads the calls from the provided dependency structure and adds them to
      * the dependency instance
      * @param array $dependencyStruct
-     * @param ride\library\dependency\Dependency $dependency
+     * @param \ride\library\dependency\Dependency $dependency
      * @return null
      */
     protected function readCalls(array &$dependencyStruct, Dependency $dependency) {
@@ -182,7 +181,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
      * Reads the arguments from the provided call structure and adds them to
      * the call instance
      * @param array $callStruct
-     * @param ride\library\dependency\DependencyCall $dependencyCall
+     * @param \ride\library\dependency\DependencyCall $dependencyCall
      * @return null
      */
     protected function readArguments(array $callStruct, DependencyCall $dependencyCall) {
@@ -220,7 +219,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
      * Reads the interfaces from the provided dependency structure and adds
      * them to the dependency instance
      * @param array $dependencyStruct
-     * @param ride\library\dependency\Dependency $dependency
+     * @param \ride\library\dependency\Dependency $dependency
      * @return null
      */
     protected function readInterfaces(array &$dependencyStruct, Dependency $dependency) {
@@ -251,7 +250,7 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
      * Reads the tags from the provided dependency structure and adds
      * them to the dependency instance
      * @param array $dependencyStruct
-     * @param ride\library\dependency\Dependency $dependency
+     * @param \ride\library\dependency\Dependency $dependency
      * @return null
      */
     protected function readTags(array &$dependencyStruct, Dependency $dependency) {

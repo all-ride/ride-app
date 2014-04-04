@@ -2,7 +2,6 @@
 
 namespace ride\application\dependency\io;
 
-use ride\library\dependency\DependencyCallArgument;
 use ride\library\dependency\DependencyContainer;
 use ride\library\system\file\File;
 
@@ -17,20 +16,20 @@ class CachedDependencyIO implements DependencyIO {
 
     /**
      * DependencyIO which is cached by this DependencyIO
-     * @var ride\core\dependency\io\DependencyIO
+     * @var \ride\application\dependency\io\DependencyIO
      */
     private $io;
 
     /**
      * File to write the cache to
-     * @var ride\library\system\file\File
+     * @var \ride\library\system\file\File
      */
     private $file;
 
     /**
      * Constructs a new cached DependencyIO
-     * @param DependencyIO $io the DependencyIO which needs a cache
-     * @param ride\library\system\file\File $file The file for the cache
+     * @param \DependencyIO $io the DependencyIO which needs a cache
+     * @param \ride\library\system\file\File $file The file for the cache
      * @return null
      */
     public function __construct(DependencyIO $io, File $file) {
@@ -40,7 +39,7 @@ class CachedDependencyIO implements DependencyIO {
 
     /**
      * Sets the file for the generated code
-     * @param ride\library\system\file\File $file The file to generate the code in
+     * @param \ride\library\system\file\File $file The file to generate the code in
      * @return null
      */
     public function setFile(File $file) {
@@ -49,7 +48,7 @@ class CachedDependencyIO implements DependencyIO {
 
     /**
      * Gets the file for the generated code
-     * @return ride\library\system\file\File The file to generate the code in
+     * @return \ride\library\system\file\File The file to generate the code in
      */
     public function getFile() {
         return $this->file;
@@ -57,7 +56,7 @@ class CachedDependencyIO implements DependencyIO {
 
     /**
      * Gets a dependency container
-     * @return ride\library\dependency\DependencyContainer
+     * @return \ride\library\dependency\DependencyContainer
      */
     public function getDependencyContainer() {
         if ($this->file->exists()) {
@@ -88,7 +87,7 @@ class CachedDependencyIO implements DependencyIO {
 
     /**
      * Generates a PHP source file for the provided dependency container
-     * @param ride\library\dependency\DependencyContainer $container
+     * @param \ride\library\dependency\DependencyContainer $container
      * @return string
      */
     protected function generatePhp(DependencyContainer $container) {

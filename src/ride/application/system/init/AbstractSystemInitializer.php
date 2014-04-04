@@ -12,8 +12,8 @@ abstract class AbstractSystemInitializer implements SystemInitializer {
 
     /**
      * Gets the module definition from a path
-     * @param ride\library\system\file\File $path
-     * @throws ride\library\system\exception\SystemException when the
+     * @param \ride\library\system\file\File $path
+     * @throws \ride\library\system\exception\SystemException when the
      * ride.json could not be parsed
      * @return null|array
      */

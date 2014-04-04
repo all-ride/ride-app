@@ -26,13 +26,13 @@ class ConfigArgumentParser implements ArgumentParser {
 
     /**
      * Instance of the configuration
-     * @var ride\library\config\Config
+     * @var \ride\library\config\Config
      */
     protected $config;
 
     /**
      * Constructs a new config argument parser
-     * @param ride\library\config\Config $config
+     * @param \ride\library\config\Config $config
      * @return null
      */
     public function __construct(Config $config) {
@@ -41,7 +41,7 @@ class ConfigArgumentParser implements ArgumentParser {
 
     /**
      * Gets the actual value of the argument
-     * @param zibo\library\dependency\DependencyCallArgument $argument
+     * @param \ride\library\dependency\DependencyCallArgument $argument
      * @return mixed Value from the configuration
      */
     public function getValue(DependencyCallArgument $argument) {
