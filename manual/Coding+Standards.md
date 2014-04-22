@@ -27,10 +27,10 @@ Namespaces are ordered alphabetically with a deeper namespace at the top. Bundle
 example:
 
     namespace ride\app;
-    
+
     use ride\application\Application;
-    
-    use ride\library\validation\ValidationException;
+
+    use ride\library\validation\exception\ValidationException;
     use ride\library\Timer;
 
     use \Exception;
@@ -41,15 +41,15 @@ example:
 Class declarations have their opening brace on the same line. An empty line goes after the definition and before the end of the class. Functions have an empty line between:
 
     class FooBar {
-    
+
         function method1() {
             ...
         }
-        
+
         function method2() {
             ...
         }
-    
+
     }
 
 
