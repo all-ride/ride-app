@@ -79,64 +79,64 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
         try {
             $content = $file->read();
             $content = $this->parser->parseToPhp($content);
+
+            if (!isset($content['dependencies'])) {
+                return;
+            }
+
+            foreach ($content['dependencies'] as $dependencyStruct) {
+                if (isset($dependencyStruct['class'])) {
+                    $className = $dependencyStruct['class'];
+
+                    unset($dependencyStruct['class']);
+                } else {
+                    $className = null;
+                }
+
+                if (isset($dependencyStruct['id'])) {
+                    $id = $dependencyStruct['id'];
+
+                    unset($dependencyStruct['id']);
+                } else {
+                    $id = null;
+                }
+
+                if (isset($dependencyStruct['extends'])) {
+                    if (isset($dependencyStruct['interfaces']) && !is_array($dependencyStruct['interfaces'])) {
+                        $interface = $dependencyStruct['interfaces'];
+                    } else {
+                        $interface = $className;
+                    }
+
+                    $dependencies = $container->getDependencies($interface);
+                    if (isset($dependencies[$dependencyStruct['extends']])) {
+                        $dependency = clone $dependencies[$dependencyStruct['extends']];
+                        $dependency->setId($id);
+
+                        if ($className) {
+                            $dependency->setClassName($className);
+                        }
+                    } else {
+                        throw new DependencyException('Could not extend interface ' . $interface . ' with id ' . $dependencyStruct['extends'] . ': extended dependency not set');
+                    }
+
+                    unset($dependencyStruct['extends']);
+                } else {
+                    $dependency = new Dependency($className, $id);
+                }
+
+                $this->readCalls($dependencyStruct, $dependency);
+                $this->readInterfaces($dependencyStruct, $dependency);
+                $this->readTags($dependencyStruct, $dependency);
+
+                if ($dependencyStruct) {
+                    throw new DependencyException('Could not add dependency for ' . $className . ': provided properties are invalid (' . implode(', ', array_keys($dependencyStruct)) . ')');
+                }
+
+                $container->addDependency($dependency);
+            }
         } catch (Exception $exception) {
             throw new DependencyException('Could not read dependencies from ' . $file, 0, $exception);
-        }
-
-        if (!isset($content['dependencies'])) {
-            return;
-        }
-
-        foreach ($content['dependencies'] as $dependencyStruct) {
-            if (isset($dependencyStruct['class'])) {
-                $className = $dependencyStruct['class'];
-
-                unset($dependencyStruct['class']);
-            } else {
-                $className = null;
-            }
-
-            if (isset($dependencyStruct['id'])) {
-                $id = $dependencyStruct['id'];
-
-                unset($dependencyStruct['id']);
-            } else {
-                $id = null;
-            }
-
-            if (isset($dependencyStruct['extends'])) {
-                if (isset($dependencyStruct['interfaces']) && !is_array($dependencyStruct['interfaces'])) {
-                    $interface = $dependencyStruct['interfaces'];
-                } else {
-                    $interface = $className;
-                }
-
-                $dependencies = $container->getDependencies($interface);
-                if (isset($dependencies[$dependencyStruct['extends']])) {
-                    $dependency = clone $dependencies[$dependencyStruct['extends']];
-                    $dependency->setId($id);
-
-                    if ($className) {
-                        $dependency->setClassName($className);
-                    }
-                } else {
-                    throw new DependencyException('Could not extend interface ' . $interface . ' with id ' . $dependencyStruct['extends'] . ': extended dependency not set');
-                }
-
-                unset($dependencyStruct['extends']);
-            } else {
-                $dependency = new Dependency($className, $id);
-            }
-
-            $this->readCalls($dependencyStruct, $dependency);
-            $this->readInterfaces($dependencyStruct, $dependency);
-            $this->readTags($dependencyStruct, $dependency);
-
-            if ($dependencyStruct) {
-                throw new DependencyException('Could not add dependency for ' . $className . ': provided properties are invalid (' . implode(', ', array_keys($dependencyStruct)) . ')');
-            }
-
-            $container->addDependency($dependency);
         }
     }
 
