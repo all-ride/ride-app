@@ -85,7 +85,7 @@
                             "name": "includeSeconds",
                             "type": "scalar",
                             "properties": {
-                                "value": false,
+                                "value": false
                             }
                         }
                     ]
