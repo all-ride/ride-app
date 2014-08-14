@@ -75,6 +75,25 @@
         },
         {
             "interfaces": "ride\\library\\decorator\\Decorator",
+            "class": "ride\\library\\decorator\\TimeDecorator",
+            "id": "time",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "includeSeconds",
+                            "type": "scalar",
+                            "properties": {
+                                "value": false,
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "ride\\library\\decorator\\Decorator",
             "class": "ride\\library\\decorator\\VariableDecorator",
             "id": "variable"
         },
@@ -223,7 +242,7 @@
             ]
         },
         {
-            "class": "ride\\library\\system\\file\\File", 
+            "class": "ride\\library\\system\\file\\File",
             "id": "cache.event",
             "calls": [
                 {
@@ -239,7 +258,7 @@
                     ]
                 }
             ]
-        },        
+        },
         {
             "interfaces": "ride\\library\\event\\loader\\io\\EventListenerIO",
             "class": "ride\\application\\event\\loader\\io\\CachedEventListenerIO",
@@ -269,7 +288,7 @@
             ]
         },
         {
-            "interfaces": "ride\\library\\event\\loader\\EventLoader", 
+            "interfaces": "ride\\library\\event\\loader\\EventLoader",
             "class": "ride\\application\\event\\loader\\DependencyEventLoader",
             "id": "dependency",
             "calls": [
@@ -289,8 +308,8 @@
             ]
         },
         {
-            "interfaces": "ride\\library\\event\\loader\\EventLoader", 
-            "class": "ride\\library\\event\\loader\\ChainedEventLoader", 
+            "interfaces": "ride\\library\\event\\loader\\EventLoader",
+            "class": "ride\\library\\event\\loader\\ChainedEventLoader",
             "id": "chain",
             "calls": [
                 {
