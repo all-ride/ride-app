@@ -94,6 +94,32 @@
         },
         {
             "interfaces": "ride\\library\\decorator\\Decorator",
+            "class": "ride\\library\\decorator\\TimeDecorator",
+            "id": "seconds",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "includeSeconds",
+                            "type": "scalar",
+                            "properties": {
+                                "value": true
+                            }
+                        },
+                        {
+                            "name": "includeHours",
+                            "type": "scalar",
+                            "properties": {
+                                "value": false
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "ride\\library\\decorator\\Decorator",
             "class": "ride\\library\\decorator\\VariableDecorator",
             "id": "variable"
         },
