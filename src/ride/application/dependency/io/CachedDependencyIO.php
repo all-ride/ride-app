@@ -170,7 +170,7 @@ class CachedDependencyIO implements DependencyIO {
                 $tags = $dependency->getTags();
                 if ($tags) {
                     foreach ($tags as $tag) {
-                        $output .= '$d->addTag(' . var_export($tag) . ");\n";
+                        $output .= '$d->addTag(' . var_export($tag, true) . ");\n";
                     }
                 }
 
