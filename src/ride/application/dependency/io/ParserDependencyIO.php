@@ -5,10 +5,11 @@ namespace ride\application\dependency\io;
 use ride\library\config\io\AbstractIO;
 use ride\library\config\parser\Parser;
 use ride\library\dependency\exception\DependencyException;
-use ride\library\dependency\Dependency;
-use ride\library\dependency\DependencyCall;
 use ride\library\dependency\DependencyCallArgument;
+use ride\library\dependency\DependencyCall;
+use ride\library\dependency\DependencyConstructCall;
 use ride\library\dependency\DependencyContainer;
+use ride\library\dependency\Dependency;
 use ride\library\system\file\browser\FileBrowser;
 use ride\library\system\file\File;
 
@@ -85,12 +86,32 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
             }
 
             foreach ($content['dependencies'] as $dependencyStruct) {
-                if (isset($dependencyStruct['class'])) {
+                $constructCall = null;
+                $className = null;
+
+                if (isset($dependencyStruct['factory'])) {
+                    $constructCallStruct = $dependencyStruct['factory'];
+
+                    unset($dependencyStruct['factory']);
+
+                    // construct call
+                    if (!isset($constructCallStruct['interface'])) {
+                        throw new DependencyException('Could not read factory: interface is not set');
+                    }
+                    if (!isset($constructCallStruct['method'])) {
+                        throw new DependencyException('Could not read factory: method is not set');
+                    }
+                    if (!isset($constructCallStruct['id'])) {
+                        $constructCallStruct['id'] = null;
+                    }
+
+                    $constructCall = new DependencyConstructCall($constructCallStruct['interface'], $constructCallStruct['method'], $constructCallStruct['id']);
+
+                    $this->readArguments($constructCallStruct, $constructCall);
+                } elseif (isset($dependencyStruct['class'])) {
                     $className = $dependencyStruct['class'];
 
                     unset($dependencyStruct['class']);
-                } else {
-                    $className = null;
                 }
 
                 if (isset($dependencyStruct['id'])) {
@@ -102,10 +123,16 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
                 }
 
                 if (isset($dependencyStruct['extends'])) {
-                    if (isset($dependencyStruct['interfaces']) && !is_array($dependencyStruct['interfaces'])) {
-                        $interface = $dependencyStruct['interfaces'];
-                    } else {
+                    if (isset($dependencyStruct['interfaces'])) {
+                        if (is_array($dependencyStruct['interfaces'])) {
+                            $interface = reset($dependencyStruct['interfaces']);
+                        } else {
+                            $interface = $dependencyStruct['interfaces'];
+                        }
+                    } elseif ($className) {
                         $interface = $className;
+                    } else {
+                        throw new DependencyException('Could not extend an interface from call ' . $constructCall->getInterface() . '->' . $constructCall->getMethodName() . '() with id ' . $dependencyStruct['extends'] . ': no interfaces set');
                     }
 
                     $dependencies = $container->getDependencies($interface);
@@ -113,7 +140,9 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
                         $dependency = clone $dependencies[$dependencyStruct['extends']];
                         $dependency->setId($id);
 
-                        if ($className) {
+                        if ($constructCall) {
+                            $dependency->setConstructCall($constructCall);
+                        } elseif ($className) {
                             $dependency->setClassName($className);
                         }
                     } else {
@@ -121,6 +150,8 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
                     }
 
                     unset($dependencyStruct['extends']);
+                } elseif ($constructCall) {
+                    $dependency = new Dependency($constructCall, $id);
                 } else {
                     $dependency = new Dependency($className, $id);
                 }
@@ -239,8 +270,13 @@ class ParserDependencyIO extends AbstractIO implements DependencyIO {
             unset($dependencyStruct['interfaces']);
         }
 
-        if (!$interfaces) {
-            $interfaces[$dependency->getClassName()] = true;
+        $className = $dependency->getClassName();
+        if (!$interfaces && !$className) {
+            $constructCall = $dependency->getConstructCall();
+
+            throw new DependencyException('Could not read interfaces for ' . $constructCall->getInterface() . '->' . $constructCall->getMethodName() . '() with id ' . $dependency->getId() . ': interfaces is required when using a factory');
+        } elseif (!$interfaces) {
+            $interfaces[$className] = true;
         }
 
         $dependency->setInterfaces($interfaces);

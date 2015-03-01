@@ -10,9 +10,11 @@ A dependency is a definition of a class instance.
 It contains the following attributes:
 
 * __class name__:
-Full class name of the object. This is the only required attribute.
+Full class name of the object. Required when not using a factory.
+* __construct call__:
+Definition of a factory call to construct the instance.
 * __interface(s)__:
-Define the interfaces this class implements. Defaults to the class name.
+Define the interfaces this class implements. Defaults to the class name, required when using a factory.
 * __id__:
 Id of the instance.
 Id's on itself are not unique, the actual id is the combination of interface and id.
@@ -60,6 +62,8 @@ To define the constructor of a dependency, simply add the _\_\_construct_ method
 
 You can easily define your own dependencies in _dependencies.json_.
 This file goes into the _config_ directory of the module directory structure.
+
+#### Dependencies
 
 The most simple definition of a dependency is a class definition.
 
@@ -110,7 +114,7 @@ You can tag your dependencies:
 
 _Note: The id attribute is optional but advised._
 
-#### Calls
+#### Additional Calls
 
 You can define calls to your instance to make sure it's ready to work:
 
@@ -164,6 +168,35 @@ You can define calls to your instance to make sure it's ready to work:
             }
         ]
     }
+
+#### Dependencies Constructed By A Factory
+
+Let a factory create your dependency:
+
+    {
+        "dependencies": [
+            {
+                "interfaces": ["vendor\\namespace\\InterfaceA", "vendor\\namespace\\InterfaceB"],
+                "id": "myid"
+                "factory": {
+                    "interface": "vendor\\namespace\\FactoryClass",
+                    "method": "factoryMethod",
+                    "arguments": [
+                        {
+                            "name": "argument",
+                            "type": "parameter",
+                            "properties": {
+                                "key": "my.config.parameter",
+                                "default": "value"
+                            }
+                        }
+                    ]
+                },
+            }
+        ]
+    }
+
+_Note: The interfaces attribute is required when using a factory._
 
 #### Extending Dependencies
 
