@@ -70,6 +70,21 @@
         },
         {
             "interfaces": "ride\\library\\decorator\\Decorator",
+            "class": "ride\\application\\decorator\\FileDecorator",
+            "id": "file"
+        },
+        {
+            "interfaces": "ride\\library\\decorator\\Decorator",
+            "class": "ride\\application\\decorator\\FileExtensionDecorator",
+            "id": "file.extension"
+        },
+        {
+            "interfaces": "ride\\library\\decorator\\Decorator",
+            "class": "ride\\application\\decorator\\FileSizeDecorator",
+            "id": "file.size"
+        },
+        {
+            "interfaces": "ride\\library\\decorator\\Decorator",
             "class": "ride\\library\\decorator\\StorageSizeDecorator",
             "id": "storage.size"
         },
