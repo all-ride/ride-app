@@ -140,7 +140,7 @@
         },
         {
             "interfaces": "ride\\library\\log\\listener\\LogListener",
-            "class": "ride\\library\\log\\listener\\FileLogListener",
+            "class": "ride\\library\\log\\listener\\BrowseableFileLogListener",
             "id": "file",
             "calls": [
                 {
