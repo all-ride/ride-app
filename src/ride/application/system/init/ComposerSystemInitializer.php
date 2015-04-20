@@ -65,7 +65,7 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
 
         // create autoloader for application and custom modules
         $autoloader = new Autoloader();
-        $autoloader->registerAutoloader();
+        $autoloader->registerAutoloader(true);
 
         $applicationSrcDirectory = $applicationDirectory->getChild('src');
         if ($applicationSrcDirectory->exists()) {
