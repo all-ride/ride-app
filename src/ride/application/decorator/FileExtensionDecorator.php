@@ -18,7 +18,7 @@ class FileExtensionDecorator implements Decorator {
      */
     public function decorate($value) {
         if ($value instanceof File) {
-            return $value->getExension();
+            return $value->getExtension();
         }
 
         return $value;
