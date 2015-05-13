@@ -2,7 +2,7 @@
     "name": "ride/app",
     "description": "Base integration of the Ride framework libraries",
     "license": "MIT",
-    "version": "0.5.3",
+    "version": "0.5.4",
     "authors": [
         {
             "name": "Joris Vandeweerd",
