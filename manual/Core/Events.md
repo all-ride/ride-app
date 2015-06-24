@@ -1,11 +1,11 @@
 Ride has a simple but powerful event manager for inserting dynamic logic or changing system behaviour.
 
 Events are triggered by name and can be dispatched to functions and/or method calls. 
-These are called the event listeners. Any valid PHP callback can work as a event listener.
+These are called the event listeners. Any valid PHP callback can work as an event listener.
 
 Event names are _._ (dot) separated strings, preferably a more general token first (eg. _app_, _database_) and defining further down the line (eg _app.dispatch.pre_).
 
-## Trigger A Event
+## Trigger An Event
 
 A event can be triggered with a simple call to the event manager:
 
@@ -62,11 +62,11 @@ You can stop the event by calling _setPreventDefault_:
         $event->setPreventDefault();
     }
     
-## Register A Event Listener
+## Register An Event Listener
 
 ### Through Code
 
-You can register a event listener to the event manager using the call:
+You can register an event listener to the event manager using the call:
 
     <?php
     
@@ -80,9 +80,9 @@ Event listeners are executed in the order they are registered.
 It's best to have listeners which are independant of each other.
 
 However, sometimes it's interesting to influence the order of the listeners.
-To achieve this, you can pass a index to the registration of your listener. 
+To achieve this, you can pass an index to the registration of your listener. 
 Indexes range from 0 to 100. 
-New listeners without a index will be added from 50 onwards.
+New listeners without an index will be added from 50 onwards.
 This gives enough room before and after the default index.
 
 In the following example, _$bar->method()_ would be triggered before _$foo->method()_ when the event _event.name_ is triggered:

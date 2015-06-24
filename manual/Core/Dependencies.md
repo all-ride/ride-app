@@ -75,7 +75,7 @@ The most simple definition of a dependency is a class definition.
         ]
     }
 
-To define a implementation of a interface, you can use the following dependency definition:
+To define an implementation of an interface, you can use the following dependency definition:
 
     {
         "dependencies": [
@@ -291,7 +291,7 @@ To obtain a specific implementation, you can pass an id when retrieving a depend
         $input = $dependencyInjector->get('ride\\library\\cli\\input\\Input', 'readline');
     }
 
-This will get the input implementation for a interactive shell.
+This will get the input implementation for an interactive shell.
 
 Loaded instances are kept in memory.
 When the same dependency is requested multiple times, only a single instance is created and it will be used as result for all requests to that dependency.
@@ -313,7 +313,7 @@ You can use tagging to obtain dependencies for a specific context:
 
 ### Get All Dependencies
 
-To get all implementation of a interface, you can call:
+To get all implementation of an interface, you can call:
 
     <?php
 

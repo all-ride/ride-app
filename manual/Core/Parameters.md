@@ -4,7 +4,7 @@ The parts of a key are separated with a _._ (dot).
 The parameters are read from the _config_ directory in the module directory structure.  
 
 The reading of the configuration is from bottom up: from lower level modules to higher level modules, up to the application directory. 
-This way, a key in application will override the same key in a module on a lower level and as such provide a overrideable system.
+This way, a key in application will override the same key in a module on a lower level and as such provide an overrideable system.
 
 ## Storage
 
