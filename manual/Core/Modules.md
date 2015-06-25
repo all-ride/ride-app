@@ -1,6 +1,6 @@
 ## What Is A Module
 
-A module is a directory containing the defined [directory structure](/manual/page/Core/Directory+Structure).
+A module is a directory containing the defined [directory structure](/admin/documentation/manual/page/Core/Directory+Structure).
 It adds a certain functionallity to your system.
 
 Everything in Ride is a module, even the core itself.
@@ -34,24 +34,25 @@ In _application/config/parameters.php_, you can override the default system init
 
 Example of the configuration in _application/config/parameters.php_ for an installation with a custom modules directory:
 
-    <?php
+```php
+<?php
 
-    use ride\application\system\init\ComposerSystemInitializer;
-    use ride\application\system\init\DirectorySystemInitializer;
+use ride\application\system\init\ComposerSystemInitializer;
 
-    // ...
+// ...
 
-    /**
-     * Parameters for a Ride system
-     * @var array
-     * @see ride\application\system\System
-     */
-    $parameters = array(
-        "cache" => array(
-            "config" => $willCacheConfig,
-        ),
-        "environment" => $environment,
-        "initializers" => array(
-            new ComposerSystemInitializer(__DIR__ . '/../../composer.lock', __DIR__ . '/../../modules'),
-        ),
-    );
+/**
+ * Parameters for a Ride system
+ * @var array
+ * @see ride\application\system\System
+ */
+$parameters = array(
+    "cache" => array(
+        "config" => $willCacheConfig,
+    ),
+    "environment" => $environment,
+    "initializers" => array(
+        new ComposerSystemInitializer(__DIR__ . '/../../composer.lock', __DIR__ . '/../../modules'),
+    ),
+);
+```

@@ -67,50 +67,58 @@ This file goes into the _config_ directory of the module directory structure.
 
 The most simple definition of a dependency is a class definition.
 
-    {
-        "dependencies": [
-            {
-                "class": "vendor\\namespace\\Class"
-            }
-        ]
-    }
+```json
+{
+    "dependencies": [
+        {
+            "class": "vendor\\namespace\\Class"
+        }
+    ]
+}
+```
 
 To define an implementation of an interface, you can use the following dependency definition:
 
-    {
-        "dependencies": [
-            {
-                "class": "vendor\\namespace\\Class",
-                "interfaces": "vendor\\namespace\\Interface",
-                "id": "myid"
-            }
-        ]
-    }
+```json
+{
+    "dependencies": [
+        {
+            "class": "vendor\\namespace\\Class",
+            "interfaces": "vendor\\namespace\\Interface",
+            "id": "myid"
+        }
+    ]
+}
+```
 
 When your dependency implements more then one interface, you can set an array in the _interfaces_ property:
 
-    {
-        "dependencies": [
-            {
-                "class": "vendor\\namespace\\Class",
-                "interfaces": ["vendor\\namespace\\InterfaceA", "vendor\\namespace\\InterfaceB"],
-                "id": "myid"
-            }
-        ]
-    }
+```json
+{
+    "dependencies": [
+        {
+            "class": "vendor\\namespace\\Class",
+            "interfaces": ["vendor\\namespace\\InterfaceA", "vendor\\namespace\\InterfaceB"],
+            "id": "myid"
+        }
+    ]
+}
+```
 
 You can tag your dependencies:
 
-    {
-        "dependencies": [
-            {
-                "class": "vendor\\namespace\\Class",
-                "interfaces": ["vendor\\namespace\\InterfaceA", "vendor\\namespace\\InterfaceB"],
-                "id": "myid",
-                "tags": ["private", "my tag"]
-            }
-        ]
-    }
+```json
+{
+    "dependencies": [
+        {
+            "class": "vendor\\namespace\\Class",
+            "interfaces": ["vendor\\namespace\\InterfaceA", "vendor\\namespace\\InterfaceB"],
+            "id": "myid",
+            "tags": ["private", "my tag"]
+        }
+    ]
+}
+```
 
 _Note: The id attribute is optional but advised._
 
@@ -118,69 +126,28 @@ _Note: The id attribute is optional but advised._
 
 You can define calls to your instance to make sure it's ready to work:
 
-    {
-        "dependencies": [
-            {
-                "class": "vendor\\namespace\\Class",
-                "interfaces": "vendor\\namespace\\InterfaceA",
-                "id": "myid",
-                "calls": [
-                    {
-                        "method": "__construct",
-                        "arguments": [
-                            {
-                                "name": "argument",
-                                "type": "dependency",
-                                "properties": {
-                                    "interface": "vendor\\namespace\\InterfaceB"
-                                }
+```json
+{
+    "dependencies": [
+        {
+            "class": "vendor\\namespace\\Class",
+            "interfaces": "vendor\\namespace\\InterfaceA",
+            "id": "myid",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "argument",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "vendor\\namespace\\InterfaceB"
                             }
-                        ]
-                    },
-                    {
-                        "method": "setValueA",
-                        "arguments": [
-                            {
-                                "name": "argument",
-                                "type": "parameter",
-                                "properties": {
-                                    "key": "my.config.parameter",
-                                    "default": "value"
-                                }
-                            }
-                        ]
-                    },
-                    {
-                        "method": "setC",
-                        "arguments": [
-                            {
-                                "name": "argument",
-                                "type": "dependency",
-                                "properties": {
-                                    "interface": "vendor\\namespace\\InterfaceC",
-                                    "id": "%my.config.id|defaultId%"
-                                }
-                            }
-                        ]
-                    },
-                    "performAction"
-                ]
-            }
-        ]
-    }
-
-#### Dependencies Constructed By A Factory
-
-Let a factory create your dependency:
-
-    {
-        "dependencies": [
-            {
-                "interfaces": ["vendor\\namespace\\InterfaceA", "vendor\\namespace\\InterfaceB"],
-                "id": "myid"
-                "factory": {
-                    "interface": "vendor\\namespace\\FactoryClass",
-                    "method": "factoryMethod",
+                        }
+                    ]
+                },
+                {
+                    "method": "setValueA",
                     "arguments": [
                         {
                             "name": "argument",
@@ -192,9 +159,54 @@ Let a factory create your dependency:
                         }
                     ]
                 },
-            }
-        ]
-    }
+                {
+                    "method": "setC",
+                    "arguments": [
+                        {
+                            "name": "argument",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "vendor\\namespace\\InterfaceC",
+                                "id": "%my.config.id|defaultId%"
+                            }
+                        }
+                    ]
+                },
+                "performAction"
+            ]
+        }
+    ]
+}
+```
+
+#### Dependencies Constructed By A Factory
+
+Let a factory create your dependency:
+
+```json
+{
+    "dependencies": [
+        {
+            "interfaces": ["vendor\\namespace\\InterfaceA", "vendor\\namespace\\InterfaceB"],
+            "id": "myid"
+            "factory": {
+                "interface": "vendor\\namespace\\FactoryClass",
+                "method": "factoryMethod",
+                "arguments": [
+                    {
+                        "name": "argument",
+                        "type": "parameter",
+                        "properties": {
+                            "key": "my.config.parameter",
+                            "default": "value"
+                        }
+                    }
+                ]
+            },
+        }
+    ]
+}
+```
 
 _Note: The interfaces attribute is required when using a factory._
 
@@ -202,59 +214,63 @@ _Note: The interfaces attribute is required when using a factory._
 
 Assume the following configuration in a module with a low level:
 
-    {
-        "dependencies": [
-            {
-                "class": "vendorA\\namespace\\SomeAuthenticator",
-                "interfaces": "vendorC\\namespace\\Authenticator",
-                "id": "vendorA"
-            },
-            {
-                "class": "vendorC\\namespace\\ChainedAuthenticator",
-                "interfaces": "vendorC\\namespace\\Authenticator",
-                "id": "chain",
-                "calls": [
-                    {
-                        "method": "addAuthenticator",
-                        "arguments": [
-                            {
-                                "interface": "vendorC\\namespace\\Authenticator",
-                                "id": "vendorA"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
+```json
+{
+    "dependencies": [
+        {
+            "class": "vendorA\\namespace\\SomeAuthenticator",
+            "interfaces": "vendorC\\namespace\\Authenticator",
+            "id": "vendorA"
+        },
+        {
+            "class": "vendorC\\namespace\\ChainedAuthenticator",
+            "interfaces": "vendorC\\namespace\\Authenticator",
+            "id": "chain",
+            "calls": [
+                {
+                    "method": "addAuthenticator",
+                    "arguments": [
+                        {
+                            "interface": "vendorC\\namespace\\Authenticator",
+                            "id": "vendorA"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
 
 The configuration in a module with a higher level:
 
-    {
-        "dependencies": [
-            {
-                "class": "vendorB\\namespace\\SomeAuthenticator",
-                "interfaces": "vendorC\\namespace\\Authenticator",
-                "id": "vendorB"
-            },
-            {
-                "interfaces": "vendorC\\namespace\\Authenticator",
-                "extends": "chain",
-                "id": "chain",
-                "calls": [
-                    {
-                        "method": "addAuthenticator",
-                        "arguments": [
-                            {
-                                "interface": "vendorC\\namespace\\Authenticator",
-                                "id": "vendorB"
-                            }
-                        ]
-                    }
-                ]
-            }
-        ]
-    }
+```json
+{
+    "dependencies": [
+        {
+            "class": "vendorB\\namespace\\SomeAuthenticator",
+            "interfaces": "vendorC\\namespace\\Authenticator",
+            "id": "vendorB"
+        },
+        {
+            "interfaces": "vendorC\\namespace\\Authenticator",
+            "extends": "chain",
+            "id": "chain",
+            "calls": [
+                {
+                    "method": "addAuthenticator",
+                    "arguments": [
+                        {
+                            "interface": "vendorC\\namespace\\Authenticator",
+                            "id": "vendorB"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
 
 Your Authenticator with id chain will now contain the authenticators of vendorA and vendorB.
 
@@ -273,23 +289,27 @@ There are situations where you want to program to the dependency injector. (eg f
 The most generic way to get a dependency is by providing only the interface.
 The last defined implementation of the interface will be loaded:
 
-    <?php
+```php
+<?php
 
-    use ride\library\dependency\DependencyInjector;
+use ride\library\dependency\DependencyInjector;
 
-    function foo(DependencyInjector $dependencyInjector) {
-        $router = $dependencyInjector->get('ride\\library\\router\\Router');
-    }
+function foo(DependencyInjector $dependencyInjector) {
+    $router = $dependencyInjector->get('ride\\library\\router\\Router');
+}
+```
 
 To obtain a specific implementation, you can pass an id when retrieving a dependency:
 
-    <?php
+```
+<?php
 
-    use ride\library\dependency\DependencyInjector;
+use ride\library\dependency\DependencyInjector;
 
-    function foo(DependencyInjector $dependencyInjector) {
-        $input = $dependencyInjector->get('ride\\library\\cli\\input\\Input', 'readline');
-    }
+function foo(DependencyInjector $dependencyInjector) {
+    $input = $dependencyInjector->get('ride\\library\\cli\\input\\Input', 'readline');
+}
+```
 
 This will get the input implementation for an interactive shell.
 
@@ -300,28 +320,32 @@ When the same dependency is requested multiple times, only a single instance is 
 
 You can use tagging to obtain dependencies for a specific context:
 
-    <?php
+```php
+<?php
 
-    use ride\library\dependency\DependencyInjector;
+use ride\library\dependency\DependencyInjector;
 
-    function foo(DependencyInjector $dependencyInjector) {
-        $include = array();
-        $exclude = array('private');
+function foo(DependencyInjector $dependencyInjector) {
+    $include = array();
+    $exclude = array('private');
 
-        $commands = $dependencyInjector->getByTag('ride\\library\\cli\\command\\Command', $include, $exclude);
-    }
+    $commands = $dependencyInjector->getByTag('ride\\library\\cli\\command\\Command', $include, $exclude);
+}
+```
 
 ### Get All Dependencies
 
 To get all implementation of an interface, you can call:
 
-    <?php
+```php
+<?php
 
-    use ride\library\dependency\DependencyInjector;
+use ride\library\dependency\DependencyInjector;
 
-    function foo(DependencyInjector $dependencyInjector) {
-        $commands = $dependencyInjector->getAll('ride\\library\\cli\\command\\Command');
-    }
+function foo(DependencyInjector $dependencyInjector) {
+    $commands = $dependencyInjector->getAll('ride\\library\\cli\\command\\Command');
+}
+```
 
 ### Using DependencyInjector As A Factory
 
@@ -331,11 +355,13 @@ The dependency injector will use the provided arguments for the constructor of t
 The instance will not be kept in the memory of the dependency injector.
 Additional defined calls of the dependency are skipped by default but can be invoked by setting the $invokeCalls argument to true.
 
-    <?php
+```php
+<?php
 
-    use ride\library\dependency\DependencyInjector;
+use ride\library\dependency\DependencyInjector;
 
-    function foo(DependencyInjector $dependencyInjector) {
-        $validator = $dependencyInjector->get('ride\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5))); // additional calls wont be invoked
-        $validator = $dependencyInjector->get('ride\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5)), true); // additional calls will be invoked
-    }
+function foo(DependencyInjector $dependencyInjector) {
+    $validator = $dependencyInjector->get('ride\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5))); // additional calls wont be invoked
+    $validator = $dependencyInjector->get('ride\\library\\validation\\validator\\Validator', 'minmax', array('options' => array('minimum' => 5)), true); // additional calls will be invoked
+}
+```
