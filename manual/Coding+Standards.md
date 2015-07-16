@@ -124,6 +124,6 @@ $var = foo($bar, $baz, $quux);
 
 ## PHP Code Tags
 
-Always use _&lt;?php ?> to delimit PHP code, not the <? ?> shorthand. 
+Always use _&lt;?php ?>_ to delimit PHP code, not the _<? ?>_ shorthand. 
 If you are writing a pure PHP file, don't close this tag. 
 PHP doesn't bother and there is a smaller chance for misfortunate output.
