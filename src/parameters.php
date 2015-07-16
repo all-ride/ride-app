@@ -1,7 +1,6 @@
 <?php
 
 use ride\application\system\init\ComposerSystemInitializer;
-use ride\application\system\init\DirectorySystemInitializer;
 
 /**
  * Name of the environment
@@ -14,14 +13,6 @@ $environment = "dev";
  * @var boolean
  */
 $willCacheConfig = false;
-
-//// read environment from ini
-//$ini = @parse_ini_file(__DIR__ . '/environment.ini');
-//if (isset($ini["environment"])) {
-//    $environment = $ini["environment"];
-//
-//    unset($ini);
-//}
 
 //// detect environment based on path
 //switch (__DIR__) {
@@ -43,8 +34,6 @@ $parameters = array(
     ),
     "environment" => $environment,
 //     "initializers" => array(
-//         new ComposerSystemInitializer(__DIR__ . '/../../composer.lock'),
 //         new ComposerSystemInitializer(__DIR__ . '/../../composer.lock', __DIR__ . '/../../modules'),
-//         new DirectorySystemInitializer(__DIR__ . '/../../modules'),
 //     ),
 );
