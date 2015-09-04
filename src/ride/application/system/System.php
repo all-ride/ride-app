@@ -197,6 +197,11 @@ class System extends LibSystem {
         $dependencyInjector->setInstance($this, array('ride\\library\\system\\System', 'ride\\application\\system\\System'));
         $dependencyInjector->setInstance($this->timer);
 
+        $argumentParsers = $dependencyInjector->getAll('ride\\library\\dependency\\argument\\ArgumentParser');
+        foreach ($argumentParsers as $argumentParserId => $argumentParser) {
+            $dependencyInjector->setArgumentParser($argumentParserId, $argumentParser);
+        }
+
         unset($this->jsonParser);
         unset($this->configHelper);
         unset($this->configIO);
