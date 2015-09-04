@@ -32,7 +32,7 @@ use ride\library\log\Log;
 
 function foo(Log $log) {
     try {
-        // some buggy code
+        // some code causing an exception
     } catch (Exception $exception) {
         $log->logException($exception);
         

@@ -188,7 +188,7 @@ Let a factory create your dependency:
     "dependencies": [
         {
             "interfaces": ["vendor\\namespace\\InterfaceA", "vendor\\namespace\\InterfaceB"],
-            "id": "myid"
+            "id": "myid",
             "factory": {
                 "interface": "vendor\\namespace\\FactoryClass",
                 "method": "factoryMethod",
@@ -301,7 +301,7 @@ function foo(DependencyInjector $dependencyInjector) {
 
 To obtain a specific implementation, you can pass an id when retrieving a dependency:
 
-```
+```php
 <?php
 
 use ride\library\dependency\DependencyInjector;

@@ -142,7 +142,7 @@ Check the following sample to know the properties:
         },
         {
             "interface": "vendor\\MyClass",
-            "method": "myListenerMethod"
+            "method": "myListenerMethod",
             "weight": "%template.event.weight|90%"
         }
     ]

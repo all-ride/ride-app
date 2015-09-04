@@ -11,9 +11,9 @@ This will download composer as _composer.phar_ in your current directory.
 Create a _composer.json_ file in your installation directory with the following contents:
 
 ```json
-    {
-        "minimum-stability": "dev",
-    }
+{
+    "minimum-stability": "dev",
+}
 ```
     
 You can do this with the following command:
