@@ -29,6 +29,10 @@ $willCacheConfig = false;
  * @see ride\application\system\System
  */
 $parameters = array(
+    "autoloader" => array(
+        "enable" => true,
+        "prepend" => true,
+    ),
     "cache" => array(
         "config" => $willCacheConfig,
     ),

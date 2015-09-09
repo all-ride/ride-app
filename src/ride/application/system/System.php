@@ -20,6 +20,7 @@ use ride\library\reflection\ReflectionHelper;
 use ride\library\system\exception\SystemException;
 use ride\library\system\file\browser\GenericFileBrowser;
 use ride\library\system\System as LibSystem;
+use ride\library\Autoloader;
 use ride\library\ErrorHandler;
 use ride\library\Timer;
 
@@ -107,6 +108,12 @@ class System extends LibSystem {
     protected $dependencyInjector;
 
     /**
+     * Custom autoloader
+     * @var \ride\library\Autoloader
+     */
+    protected $autoloader;
+
+    /**
      * Constructs a new Ride system
      * @return null
      */
@@ -150,6 +157,32 @@ class System extends LibSystem {
      */
     public function getEnvironment() {
         return $this->parameters['environment'];
+    }
+
+    /**
+     * Gets the custom autoloader from Ride
+     * @return \ride\library\Autoloader|boolean Instance of the autoloader if
+     * enabled, false otherwise
+     */
+    public function getAutoloader() {
+        if ($this->autoloader !== null) {
+            return $this->autoloader;
+        }
+
+        if (!isset($this->parameters['autoloader']) || (isset($this->parameters['autoloader']['enable']) && $this->parameters['autoloader']['enable'])) {
+            if (isset($this->parameters['autoloader']['prepend'])) {
+                $prepend = $this->parameters['autoloader']['prepend'];
+            } else {
+                $prepend = true;
+            }
+
+            $this->autoloader = new Autoloader();
+            $this->autoloader->registerAutoloader($prepend);
+        } else {
+            $this->autoloader = false;
+        }
+
+        return $this->autoloader;
     }
 
     /**
