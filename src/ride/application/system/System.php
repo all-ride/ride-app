@@ -178,6 +178,10 @@ class System extends LibSystem {
 
             $this->autoloader = new Autoloader();
             $this->autoloader->registerAutoloader($prepend);
+
+            if (isset($this->parameters['autoloader']['include_path']) && $this->parameters['autoloader']['include_path']) {
+                $this->autoloader->addIncludePaths();
+            }
         } else {
             $this->autoloader = false;
         }

@@ -31,6 +31,7 @@ $willCacheConfig = false;
 $parameters = array(
     "autoloader" => array(
         "enable" => true,
+        "include_path" => false,
         "prepend" => true,
     ),
     "cache" => array(
