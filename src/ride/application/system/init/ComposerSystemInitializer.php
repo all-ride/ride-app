@@ -63,13 +63,13 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
         $fileBrowser->setApplicationDirectory($applicationDirectory);
         $fileBrowser->setPublicDirectory($publicDirectory);
 
-        // create autoloader for application and custom modules
-        $autoloader = new Autoloader();
-        $autoloader->registerAutoloader(true);
-
-        $applicationSrcDirectory = $applicationDirectory->getChild('src');
-        if ($applicationSrcDirectory->exists()) {
-            $autoloader->addIncludePath($applicationSrcDirectory->getAbsolutePath());
+        // retrieve autoloader for application and custom modules
+        $autoloader = $system->getAutoloader();
+        if ($autoloader) {
+            $applicationSrcDirectory = $applicationDirectory->getChild('src');
+            if ($applicationSrcDirectory->exists()) {
+                $autoloader->addIncludePath($applicationSrcDirectory->getAbsolutePath());
+            }
         }
 
         // set the include directories
@@ -97,9 +97,11 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
                         $includePaths[$module['level']][] = $module['path'];
                     }
 
-                    $moduleSrcDirectory = $moduleDirectory->getChild('src');
-                    if ($moduleSrcDirectory->exists()) {
-                        $autoloader->addIncludePath($moduleSrcDirectory->getAbsolutePath());
+                    if ($autoloader) {
+                        $moduleSrcDirectory = $moduleDirectory->getChild('src');
+                        if ($moduleSrcDirectory->exists()) {
+                            $autoloader->addIncludePath($moduleSrcDirectory->getAbsolutePath());
+                        }
                     }
                 }
             }
