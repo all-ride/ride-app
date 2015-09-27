@@ -1,5 +1,7 @@
 {
     "log.file": "%application%/data/log/%environment%.log",
+    "system.cache.directory": "%application%/data/cache/%environment%/app",
     "system.cache.event": "%application%/data/cache/%environment%/events.php",
+    "system.cache.file": "%application%/data/cache/%environment%/app.memory",
     "system.directory.user": "%application%/data/upload"
 }
