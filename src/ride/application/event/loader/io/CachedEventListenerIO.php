@@ -71,7 +71,17 @@ class CachedEventListenerIO implements EventListenerIO {
                 return $eventListeners;
             }
         }
+        
         // we have no events, use the wrapped IO to get one
+        return $this->io->readEventListeners();
+    }
+
+    /**
+     * Warms the cache of the event listeners
+     * @return array Hierarchic array with the name of the event as key and an
+     * array with Event instances as value
+     */
+    public function warmCache() {
         $eventListeners = $this->io->readEventListeners();
 
         // generate the PHP code for the obtained container
@@ -86,6 +96,16 @@ class CachedEventListenerIO implements EventListenerIO {
 
         // return the events
         return $eventListeners;
+    }
+
+    /**
+     * Clears the cache of the dependency container
+     * @return null
+     */
+    public function clearCache() {
+        if ($this->file->exists()) {
+            $this->file->delete();
+        }
     }
 
     /**

@@ -4,8 +4,6 @@ namespace ride\application\system\init;
 
 use ride\application\system\System;
 
-use ride\library\Autoloader;
-
 /**
  * Composer implementation to initialize the Ride system
  */

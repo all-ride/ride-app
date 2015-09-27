@@ -1,12 +1,121 @@
 {
     "dependencies": [
         {
-            "interfaces": "ride\\application\\cache\\control\\CacheControl",
+            "class": "ride\\library\\system\\file\\File",
+            "id": "cache.file",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "path",
+                            "type": "parameter",
+                            "properties": {
+                                "key": "system.cache.file"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "class": "ride\\library\\system\\file\\File",
+            "id": "cache.directory",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "path",
+                            "type": "parameter",
+                            "properties": {
+                                "key": "system.cache.directory"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "ride\\library\\cache\\pool\\CachePool",
+            "class": "ride\\library\\cache\\pool\\FileCachePool",
+            "id": "memory",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "file",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "ride\\library\\system\\file\\File",
+                                "key": "cache.file"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "ride\\library\\cache\\pool\\CachePool",
+            "class": "ride\\library\\cache\\pool\\DirectoryCachePool",
+            "id": "file",
+            "calls": [
+                {
+                    "method": "__construct",
+                    "arguments": [
+                        {
+                            "name": "directory",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "ride\\library\\system\\file\\File",
+                                "key": "cache.file"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "ride\\library\\cache\\control\\CacheControl",
+            "class": "ride\\application\\cache\\control\\PoolCacheControl",
+            "id": "pool",
+            "calls": [
+                {
+                    "method": "addCachePool",
+                    "arguments": [
+                        {
+                            "name": "cachePool",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "ride\\library\\cache\\pool\\CachePool",
+                                "id": "memory"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "method": "addCachePool",
+                    "arguments": [
+                        {
+                            "name": "cachePool",
+                            "type": "dependency",
+                            "properties": {
+                                "interface": "ride\\library\\cache\\pool\\CachePool",
+                                "id": "file"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "interfaces": "ride\\library\\cache\\control\\CacheControl",
             "class": "ride\\application\\cache\\control\\DependencyCacheControl",
             "id": "dependencies"
         },
         {
-            "interfaces": "ride\\application\\cache\\control\\CacheControl",
+            "interfaces": "ride\\library\\cache\\control\\CacheControl",
             "class": "ride\\application\\cache\\control\\EventCacheControl",
             "id": "events",
             "calls": [
@@ -26,7 +135,7 @@
             ]
         },
         {
-            "interfaces": "ride\\application\\cache\\control\\CacheControl",
+            "interfaces": "ride\\library\\cache\\control\\CacheControl",
             "class": "ride\\application\\cache\\control\\ParameterCacheControl",
             "id": "parameters"
         },

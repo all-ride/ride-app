@@ -75,17 +75,22 @@ class DependencyCacheControl extends AbstractCacheControl {
     }
 
     /**
-	 * Clears this cache
-	 * @return null
+     * Warms up the cache
+     * @return null
+     */
+    public function warm() {
+        if ($this->isEnabled()) {
+            $this->io->warmCache();
+        }
+    }
+
+    /**
+     * Clears this cache
+     * @return null
      */
     public function clear() {
-        if (!$this->isEnabled()) {
-            return;
-        }
-
-        $file = $this->io->getFile();
-        if ($file->exists()) {
-            $file->delete();
+        if ($this->isEnabled()) {
+            $this->io->clearCache();
         }
     }
 

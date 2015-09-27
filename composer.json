@@ -2,7 +2,7 @@
     "name": "ride/app",
     "description": "Base integration of the Ride framework libraries",
     "license": "MIT",
-    "version": "0.6.3",
+    "version": "0.7.0",
     "authors": [
         {
             "name": "Joris Vandeweerd",
@@ -15,7 +15,8 @@
     ],
     "require": {
         "ride/lib-common": ">=0.5.0",
-        "ride/lib-config": ">=0.2.0",
+        "ride/lib-cache": ">=0.3.0",
+        "ride/lib-config": ">=0.4.0",
         "ride/lib-dependency": ">=0.7.0",
         "ride/lib-event": ">=0.3.0",
         "ride/lib-log": ">=0.3.0",
