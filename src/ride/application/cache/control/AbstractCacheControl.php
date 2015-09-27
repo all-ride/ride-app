@@ -2,6 +2,8 @@
 
 namespace ride\application\cache\control;
 
+use ride\library\cache\control\CacheControl;
+
 /**
 * Interface to control a cache
 */
@@ -36,6 +38,14 @@ abstract class AbstractCacheControl implements CacheControl {
      * @return null
      */
     public function disable() {
+
+    }
+
+    /**
+     * Warms up the cache
+     * @return null
+     */
+    public function warm() {
 
     }
 

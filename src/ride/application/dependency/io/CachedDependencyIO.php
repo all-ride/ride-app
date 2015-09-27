@@ -68,6 +68,15 @@ class CachedDependencyIO implements DependencyIO {
                 return $container;
             }
         }
+
+        return $this->io->getDependencyContainer();
+    }
+
+    /**
+     * Warms the cache of the dependency container
+     * @return \ride\library\dependency\DependencyContainer
+     */
+    public function warmCache() {
         // we have no container, use the wrapped IO to get one
         $container = $this->io->getDependencyContainer();
 
@@ -81,8 +90,17 @@ class CachedDependencyIO implements DependencyIO {
         // write the PHP code to file
         $this->file->write($php);
 
-        // return the contianer
         return $container;
+    }
+
+    /**
+     * Clears the cache of the dependency container
+     * @return null
+     */
+    public function clearCache() {
+        if ($this->file->exists()) {
+            $this->file->delete();
+        }
     }
 
     /**
