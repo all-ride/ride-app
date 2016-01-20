@@ -1,3 +1,4 @@
+log.action                        Action level of the log. 0 to disable, 1 to log requests where an error has occured
 log.file                          Path to the log file.
 log.level                         Level of messages to log. 0 for everything, 1 for errors, 2 for warnings, 4 for information messages and 8 for debug messages.
 log.truncate                      Maximum size for the log file in kb.
