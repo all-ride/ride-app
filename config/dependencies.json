@@ -290,6 +290,18 @@
                     ]
                 },
                 {
+                    "method": "setActionLevel",
+                    "arguments": [
+                        {
+                            "name": "actionLevel",
+                            "type": "parameter",
+                            "properties": {
+                                "key": "log.action"
+                            }
+                        }
+                    ]
+                },
+                {
                     "method": "setLogMessageDecorator",
                     "arguments": [
                         {
