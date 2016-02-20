@@ -15,6 +15,7 @@ use ride\library\config\io\ParserConfigIO;
 use ride\library\config\parser\JsonParser;
 use ride\library\config\GenericConfig;
 use ride\library\config\ConfigHelper;
+use ride\library\dependency\intelligence\DependencyIntelligence;
 use ride\library\dependency\DependencyInjector;
 use ride\library\reflection\ReflectionHelper;
 use ride\library\system\exception\SystemException;
@@ -221,9 +222,20 @@ class System extends LibSystem {
         $dependencyIO = $this->createDependencyIO();
         $dependencyContainer = $dependencyIO->getDependencyContainer();
 
+        if ($config->get(self::PARAM_CACHE_DEPENDENCIES)) {
+            $file = 'data/cache/' . $this->parameters['environment'] . '/dependencies-factory.php';
+            $file = $this->fileBrowser->getApplicationDirectory()->getChild($file);
+            $file->getParent()->create();
+
+            $dependencyIntelligence = new DependencyIntelligence($file);
+        } else {
+            $dependencyIntelligence = null;
+        }
+
         $reflectionHelper = new ReflectionHelper();
 
         $dependencyInjector = new DependencyInjector($dependencyContainer, $reflectionHelper);
+        $dependencyInjector->setIntelligence($dependencyIntelligence);
         $dependencyInjector->setArgumentParser(DependencyInjector::TYPE_CALL, $callArgumentParser);
         $dependencyInjector->setArgumentParser(DependencyInjector::TYPE_DEPENDENCY, $dependencyArgumentParser);
         $dependencyInjector->setArgumentParser('parameter', $configArgumentParser);

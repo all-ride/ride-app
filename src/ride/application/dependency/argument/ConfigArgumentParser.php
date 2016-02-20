@@ -3,14 +3,14 @@
 namespace ride\application\dependency\argument;
 
 use ride\library\config\Config;
-use ride\library\dependency\argument\ArgumentParser;
+use ride\library\dependency\argument\AbstractArgumentParser;
 use ride\library\dependency\exception\DependencyException;
 use ride\library\dependency\DependencyCallArgument;
 
 /**
  * Parser for defined configuration values
  */
-class ConfigArgumentParser implements ArgumentParser {
+class ConfigArgumentParser extends AbstractArgumentParser {
 
     /**
      * Name of the property for the key of a parameter
