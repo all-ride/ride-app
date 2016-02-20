@@ -87,7 +87,7 @@ class System extends LibSystem {
      * System parameters
      * @var array
      */
-    protected $parameters;
+    private $parameters;
 
     /**
      * Instance of the file browser
@@ -112,6 +112,12 @@ class System extends LibSystem {
      * @var \ride\library\Autoloader
      */
     protected $autoloader;
+
+    /**
+     * Name of the running service
+     * @var string
+     */
+    private $service;
 
     /**
      * Constructs a new Ride system
@@ -347,6 +353,18 @@ class System extends LibSystem {
     }
 
     /**
+     * Gets the log
+     * @return \ride\library\log\Log|null
+     */
+    public function getLog() {
+        try {
+            return $this->getDependencyInjector()->get('ride\\library\\log\\Log');
+        } catch (DependencyNotFoundException $exception) {
+            return null;
+        }
+    }
+
+    /**
      * Invoke the system initializers
      * @return null
      * @throws \ride\library\system\exception\SystemException when a non
@@ -384,9 +402,7 @@ class System extends LibSystem {
      * @return string
      */
     public function getName() {
-        $config = $this->getConfig();
-
-        return $config->get(self::PARAM_NAME, 'Ride');
+        return $this->getConfig()->get(self::PARAM_NAME, 'Ride');
     }
 
     /**
@@ -411,12 +427,21 @@ class System extends LibSystem {
      * @return null
      */
     public function service($id = null) {
+        if ($this->service) {
+            throw new SystemException('Could not start service: already running ' . $this->service);
+        }
+
         if ($id == null) {
             $id = $this->getConfig()->get(self::PARAM_APPLICATION);
         }
 
         $app = $this->getDependencyInjector()->get('ride\\application\\Application', $id);
+
+        $this->service = $id;
+
         $app->service();
+
+        $this->service = null;
     }
 
     /**
@@ -428,12 +453,7 @@ class System extends LibSystem {
      * could not be executed
      */
     protected function executeCommand($command, &$code = null) {
-        try {
-            $log = $this->getDependencyInjector()->get('ride\\library\\log\\Log');
-        } catch (DependencyNotFoundException $exception) {
-
-        }
-
+        $log = $this->getLog();
         if ($log) {
             $log->logDebug('Executing command', $command);
         }
