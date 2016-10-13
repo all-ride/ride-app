@@ -38,7 +38,7 @@ It adds access to the Ride framework and makes the following components availabl
 
 * System and [configuration parameters](manual/Core/Parameters.md)
 * [Dependency injector](manual/Core/Dependencies.md)
-* [File browser](manual/Core/File+System.md]
+* [File browser](manual/Core/File+System.md)
 * [Log](manual/Core/Log.mp)
 * Autoloader
 
