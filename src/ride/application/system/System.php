@@ -36,6 +36,12 @@ class System extends LibSystem {
     const DIRECTORY_CONFIG = 'config';
 
     /**
+     * Name of the source directory
+     * @var string
+     */
+    const DIRECTORY_SOURCE = 'src';
+
+    /**
      * Name of the public directory
      * @var string
      */
@@ -260,9 +266,8 @@ class System extends LibSystem {
     protected function createDependencyIO() {
         $fileBrowser = $this->getFileBrowser();
         $config = $this->getConfig();
-        $parser = new JsonParser();
 
-        $dependencyIO = new ParserDependencyIO($fileBrowser, $parser, 'dependencies.json', self::DIRECTORY_CONFIG);
+        $dependencyIO = new ParserDependencyIO($fileBrowser, $this->jsonParser, 'dependencies.json', self::DIRECTORY_CONFIG);
         $dependencyIO->setEnvironment($this->parameters['environment']);
         $dependencyIO->setConfig($config);
 
@@ -373,13 +378,11 @@ class System extends LibSystem {
     protected function initializeSystem() {
         foreach ($this->parameters['initializers'] as $initializer) {
             if (!$initializer instanceof SystemInitializer) {
-                throw new SystemException('Could not initialize the system: no instance of SystemInitializer detected');
+                throw new SystemException('Could not initialize the system: provided initializer is not an instance of ride\\application\\system\\init\\SystemInitializer');
             }
 
             $initializer->initializeSystem($this);
         }
-
-        unset($this->parameters['initializers']);
     }
 
     /**

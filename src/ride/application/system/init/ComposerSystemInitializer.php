@@ -7,7 +7,7 @@ use ride\application\system\System;
 /**
  * Composer implementation to initialize the Ride system
  */
-class ComposerSystemInitializer extends AbstractSystemInitializer {
+class ComposerSystemInitializer extends AbstractCacheableSystemInitializer {
 
     /**
      * Path to composer.lock
@@ -37,11 +37,11 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
     }
 
     /**
-     * Initializes the system eg. by setting the file browser paths
+     * Performs the initialization of the system eg. by setting the file browser
      * @param \ride\application\system\System $system Instance of the system
      * @return null
      */
-    public function initializeSystem(System $system) {
+    protected function performInitializeSystem(System $system) {
         $fileSystem = $system->getFileSystem();
 
         $composerFile = $fileSystem->getFile($this->lockFile);
@@ -51,11 +51,11 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
         }
 
         // get the normalized root path
-        $rootFile = $fileSystem->getFile($composerFile->getParent()->getAbsolutePath());
+        $root = $fileSystem->getFile($composerFile->getParent()->getAbsolutePath());
 
         // set the application and public directory
-        $applicationDirectory = $rootFile->getChild('application');
-        $publicDirectory = $rootFile->getChild('public');
+        $applicationDirectory = $root->getChild('application');
+        $publicDirectory = $root->getChild('public');
 
         $fileBrowser = $system->getFileBrowser();
         $fileBrowser->setApplicationDirectory($applicationDirectory);
@@ -63,25 +63,17 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
 
         // retrieve autoloader for application and custom modules
         $autoloader = $system->getAutoloader();
-        if ($autoloader) {
-            $applicationSrcDirectory = $applicationDirectory->getChild('src');
-            if ($applicationSrcDirectory->exists()) {
-                $autoloader->addIncludePath($applicationSrcDirectory->getAbsolutePath());
-            }
+        if (!$autoloader) {
+            $autoloader = null;
         }
-
-        // set the include directories
-        $includePaths = array();
+        $this->addModuleDirectory($applicationDirectory, $autoloader, false);
 
         // read installed packages from composer
         $composer = json_decode($composerFile->read(), true);
         foreach ($composer['packages'] as $package) {
-            $path = $rootFile->getChild('vendor/' . $package['name']);
+            $directory = $root->getChild('vendor/' . $package['name']);
 
-            $module = $this->getModuleFromPath($path);
-            if ($module) {
-                $includePaths[$module['level']][] = $module['path'];
-            }
+            $this->addModuleDirectory($directory);
         }
 
         // read modules from module directory
@@ -90,30 +82,12 @@ class ComposerSystemInitializer extends AbstractSystemInitializer {
             if ($modulesDirectory->isDirectory()) {
                 $moduleDirectories = $modulesDirectory->read();
                 foreach ($moduleDirectories as $moduleDirectory) {
-                    $module = $this->getModuleFromPath($moduleDirectory);
-                    if ($module) {
-                        $includePaths[$module['level']][] = $module['path'];
-                    }
-
-                    if ($autoloader) {
-                        $moduleSrcDirectory = $moduleDirectory->getChild('src');
-                        if ($moduleSrcDirectory->exists()) {
-                            $autoloader->addIncludePath($moduleSrcDirectory->getAbsolutePath());
-                        }
-                    }
+                    $this->addModuleDirectory($moduleDirectory, $autoloader);
                 }
             }
         }
 
-        // add paths of the modules to the file browser
-        ksort($includePaths);
-        $includePaths = array_reverse($includePaths, true);
-
-        foreach ($includePaths as $level => $includeDirectories) {
-            foreach ($includeDirectories as $includeDirectory) {
-                $fileBrowser->addIncludeDirectory($includeDirectory);
-            }
-        }
+        $this->addIncludeDirectories($fileBrowser);
     }
 
 }

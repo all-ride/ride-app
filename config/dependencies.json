@@ -140,6 +140,11 @@
             "id": "parameters"
         },
         {
+            "interfaces": "ride\\library\\cache\\control\\CacheControl",
+            "class": "ride\\application\\cache\\control\\SystemCacheControl",
+            "id": "system"
+        },
+        {
             "interfaces": "ride\\library\\decorator\\Decorator",
             "class": "ride\\library\\decorator\\DateFormatDecorator",
             "id": "date.format"
