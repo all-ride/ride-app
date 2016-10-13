@@ -23,7 +23,6 @@ One of the responsibility of system initializers is making modules known to Ride
 
 By default, all Ride modules installed through Composer are automatically detected.
 
-
 ### Add A Module Directory
 
 In _application/config/parameters.php_, you can override the default system initializer.

@@ -43,32 +43,17 @@ class DirectorySystemInitializer extends AbstractSystemInitializer {
         $directory = $fileSystem->getFile($directory->getAbsolutePath());
         $fileBrowser = $system->getFileBrowser();
 
-        $autoloader = new Autoloader();
-        $autoloader->registerAutoloader();
+        $autoloader = $system->getAutoloader();
+        if (!$autoloader) {
+            $autoloader = null;
+        }
 
-        // set the include directories
-        $includePaths = array();
-
-        // read modules from the directory
         $directories = $directory->read();
         foreach ($directories as $directory) {
-            $module = $this->getModuleFromPath($directory);
-            if ($module) {
-                $includePaths[$module['level']][] = $module['path'];
-            }
-
-            $autoloader->addIncludePath($directory->getChild('src')->getAbsolutePath());
+            $this->addModuleDirectory($directory, $autoloader);
         }
 
-        // add paths of the modules to the file browser
-        ksort($includePaths);
-        $includePaths = array_reverse($includePaths, true);
-
-        foreach ($includePaths as $level => $includeDirectories) {
-            foreach ($includeDirectories as $includeDirectory) {
-                $fileBrowser->addIncludeDirectory($includeDirectory);
-            }
-        }
+        $this->addIncludeDirectories($fileBrowser);
     }
 
 }

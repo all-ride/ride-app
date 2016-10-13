@@ -20,7 +20,7 @@ You can do this with the following command:
 
 ```
 echo '{"minimum-stability": "dev"}' > composer.json
-```    
+```
 
 Now you can run the following command to install the web interface: 
 
