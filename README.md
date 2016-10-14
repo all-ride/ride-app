@@ -94,6 +94,7 @@ You can set a custom modules directory to add modules which are outside of the _
 - [ride/app-validation](https://github.com/all-ride/ride-app-validation)
 - [ride/cli](https://github.com/all-ride/ride-cli)
 - [ride/cli-app](https://github.com/all-ride/ride-cli-app)
+- [ride/setup-app](https://github.com/all-ride/ride-setup-app)
 - [ride/web](https://github.com/all-ride/ride-web)
 
 ## Installation
