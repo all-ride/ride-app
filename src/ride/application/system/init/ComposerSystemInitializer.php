@@ -70,10 +70,21 @@ class ComposerSystemInitializer extends AbstractCacheableSystemInitializer {
 
         // read installed packages from composer
         $composer = json_decode($composerFile->read(), true);
-        foreach ($composer['packages'] as $package) {
-            $directory = $root->getChild('vendor/' . $package['name']);
 
-            $this->addModuleDirectory($directory);
+        if (isset($composer['packages'])) {
+            foreach ($composer['packages'] as $package) {
+                $directory = $root->getChild('vendor/' . $package['name']);
+
+                $this->addModuleDirectory($directory);
+            }
+        }
+
+        if (isset($composer['packages-dev'])) {
+            foreach ($composer['packages-dev'] as $package) {
+                $directory = $root->getChild('vendor/' . $package['name']);
+
+                $this->addModuleDirectory($directory);
+            }
         }
 
         // read modules from module directory
