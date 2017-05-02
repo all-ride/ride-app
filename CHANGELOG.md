@@ -1,3 +1,7 @@
+## [1.1.0] - 2017-05-02
+### Added
+- possibility to disable installed modules
+
 ## [1.0.1] - 2016-11-04
 ### Updated
 - ComposerSystemInitializer: process installed packages from "packages-dev" and not only "packages"

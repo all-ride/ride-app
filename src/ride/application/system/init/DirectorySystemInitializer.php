@@ -50,6 +50,10 @@ class DirectorySystemInitializer extends AbstractSystemInitializer {
 
         $directories = $directory->read();
         foreach ($directories as $directory) {
+            if ($this->isModuleDisabled($directory->getName())) {
+                continue;
+            }
+
             $this->addModuleDirectory($directory, $autoloader);
         }
 

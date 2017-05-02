@@ -21,6 +21,34 @@ abstract class AbstractSystemInitializer implements SystemInitializer {
     protected $modules = array();
 
     /**
+     * Names of the disabled modules as key
+     * @var array
+     */
+    protected $disabledModules = array();
+
+    /**
+     * Sets the disabled modules
+     * @param array $disabledModules Array with the names of modules as value
+     * @return null
+     */
+    public function setDisabledModules(array $disabledModules) {
+        $this->disabledModules = array();
+
+        foreach ($disabledModules as $moduleName) {
+            $this->disabledModules[$moduleName] = true;
+        }
+    }
+
+    /**
+     * Checks if the provided module is disabled
+     * @param string $name Name of the module
+     * @return boolean
+     */
+    protected function isModuleDisabled($name) {
+        return isset($this->disabledModules[$name]);
+    }
+
+    /**
      * Adds a module directory to the system
      * @param \ride\library\system\file\File $directory Directory to add
      * @param \ride\library\Autoloader $autoloader When provided and a
