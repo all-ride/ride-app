@@ -73,6 +73,10 @@ class ComposerSystemInitializer extends AbstractCacheableSystemInitializer {
 
         if (isset($composer['packages'])) {
             foreach ($composer['packages'] as $package) {
+                if ($this->isModuleDisabled($package['name'])) {
+                    continue;
+                }
+
                 $directory = $root->getChild('vendor/' . $package['name']);
 
                 $this->addModuleDirectory($directory);
@@ -81,6 +85,10 @@ class ComposerSystemInitializer extends AbstractCacheableSystemInitializer {
 
         if (isset($composer['packages-dev'])) {
             foreach ($composer['packages-dev'] as $package) {
+                if ($this->isModuleDisabled($package['name'])) {
+                    continue;
+                }
+
                 $directory = $root->getChild('vendor/' . $package['name']);
 
                 $this->addModuleDirectory($directory);
@@ -93,6 +101,10 @@ class ComposerSystemInitializer extends AbstractCacheableSystemInitializer {
             if ($modulesDirectory->isDirectory()) {
                 $moduleDirectories = $modulesDirectory->read();
                 foreach ($moduleDirectories as $moduleDirectory) {
+                    if ($this->isModuleDisabled($moduleDirectory->getName())) {
+                        continue;
+                    }
+
                     $this->addModuleDirectory($moduleDirectory, $autoloader);
                 }
             }

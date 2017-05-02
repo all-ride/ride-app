@@ -39,11 +39,20 @@ $modulesDirectory = null;
 // $modulesDirectory =  __DIR__ . '/../../modules';
 
 /**
+ * Collection of installed modules which should be disabled by Ride
+ * @var array
+ */
+$disabledModules = array(
+//  'ride/app-i18n-en',
+);
+
+/**
  * System initializer through composer
  * @var ride\application\system\init\ComposerSystemInitializer
  */
 $composerInitializer = new ComposerSystemInitializer(__DIR__ . '/../../composer.lock', $modulesDirectory);
 $composerInitializer->setCacheFile($systemCacheFile);
+$composerInitializer->setDisabledModules($disabledModules);
 
 /**
  * System parameters for Ride
