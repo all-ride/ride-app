@@ -1,3 +1,6 @@
+## [1.2.0] - 2023-08-23
+### Updated
+- Creation of dynamic properties is deprecated in php 8+
 ## [1.1.0] - 2017-05-02
 ### Added
 - possibility to disable installed modules

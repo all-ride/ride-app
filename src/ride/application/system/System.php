@@ -125,6 +125,16 @@ class System extends LibSystem {
      */
     private $service;
 
+    private $timer;
+
+    private $configHelper;
+
+    private $jsonParser;
+
+    private $configIO;
+
+    private $variables;
+
     /**
      * Constructs a new Ride system
      * @return null
@@ -142,7 +152,7 @@ class System extends LibSystem {
 
         if (!isset($this->parameters['initializers'])) {
             $this->parameters['initializers'] = array(
-            	new ComposerSystemInitializer(),
+                new ComposerSystemInitializer(),
             );
         }
     }
