@@ -17,6 +17,8 @@ class CallArgumentParser extends LibCallArgumentParser {
      */
     protected $config;
 
+    protected $dependencyInjector;
+
     /**
      * Constructs a new call argument parser
      * @param \ride\library\config\Config $config

@@ -1,4 +1,4 @@
-## [1.2.0] - 2023-08-23
+## [1.2.1] - 2023-08-23
 ### Updated
 - Creation of dynamic properties is deprecated in php 8+
 ## [1.1.0] - 2017-05-02
